@@ -1,0 +1,67 @@
+.App {
+  padding: 30px;
+  display: flex;
+}
+
+.App > div {
+  margin-right: 50px;
+}
+
+/* Todolist */
+
+.todolist {
+  background-color: rgba(219, 211, 216, 0.5);
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.todolist > h3 {
+  margin-top: 0;
+  text-align: center;
+  color: #2e5e4e;
+}
+
+.todolist button + button {
+  margin-left: 5px;
+}
+
+.todolist > ul {
+  list-style: none;
+  padding: 5px 0;
+}
+
+li {
+  display: flex;
+  margin-bottom: 4px;
+  background-color: rgba(219, 211, 216, 0.2);
+}
+
+li:hover {
+  background-color: rgba(219, 211, 216, 0.4);
+}
+
+li span {
+  flex-grow: 1;
+}
+
+.error {
+  border: red 1px solid;
+  outline: none;
+}
+
+.error-message {
+  color: red;
+  font-size: 12px;
+}
+
+.active-filter {
+  background-color: #2e5e4e;
+  color: white;
+  border-radius: 2px;
+  border: 2px solid #2e5e4e;
+}
+
+.is-done {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
