@@ -2,6 +2,7 @@ import { ChangeEvent, useState, KeyboardEvent } from 'react';
 import {TaskType} from "./App";
 import {Button} from "./Button";
 import {useAutoAnimate} from "@formkit/auto-animate/react";
+import { AddItemForm } from './AddItemForm';
 
 type FilterValuesType = 'all' | 'active' | 'completed'
 
@@ -38,28 +39,8 @@ export const Todolist = ({title, tasks, removeTask, addTask, changeTaskStatus, t
 		setFilter(newFilterValue);
 	}
 
-	const changeTaskTitleHandler = (event: ChangeEvent<HTMLInputElement>) => {
-		setTaskTitle(event.currentTarget.value);
-	}
-
 	const addTaskHandler = () => {
-		if (!taskTitle.trim()) {
-			setError('Title is required');
-			setTaskTitle('');
-			return;
-		}
-
-		if (isTaskTitleValid) {
-			addTask(taskTitle.trim(), todolistId);
-			setTaskTitle('');
-		}
-	}
-
-	const addTaskOnKeyUpHandler = (event: KeyboardEvent<HTMLInputElement>) => {
-		setError(null);
-		if (event.key === 'Enter') {
-			addTaskHandler();
-		}
+		addTask(taskTitle.trim(), todolistId);
 	}
 
 	const removeTaskHandler = (taskId: string) => {
@@ -70,10 +51,12 @@ export const Todolist = ({title, tasks, removeTask, addTask, changeTaskStatus, t
 		changeTaskStatus(taskId, e.currentTarget.checked, todolistId)
 	}
 
-	const isTaskTitleValid = taskTitle.length < 16;
-
 	const removeTodolistHandler = () => {
 		removeTodolist(todolistId);
+	}
+
+	const addTaskCallback = (title: string) => {
+		addTask(title, todolistId)
 	}
 
 	return (
@@ -82,19 +65,7 @@ export const Todolist = ({title, tasks, removeTask, addTask, changeTaskStatus, t
 				<h3>{title}</h3>
 				<Button title={'x'} onClick={removeTodolistHandler} />
 			</div>
-			<div>
-				<input
-					value={taskTitle}
-					className={error ? 'error' : ''}
-					onChange={changeTaskTitleHandler}
-					onKeyUp={addTaskOnKeyUpHandler}
-					placeholder='max length 15'
-					maxLength={15}
-				/>
-				<Button title={'+'} onClick={addTaskHandler} isDisabled={!isTaskTitleValid}/>
-				{!isTaskTitleValid && <div className={'error-message'}>Max length is 15</div>}
-				{error && <div className={'error-message'}>{error}</div>}
-			</div>
+			<AddItemForm addItem={addTaskCallback} />
 			{
 				filteredTasks.length === 0
 					? <p>No tasks</p>
