@@ -6,14 +6,16 @@ import {useAutoAnimate} from "@formkit/auto-animate/react";
 type FilterValuesType = 'all' | 'active' | 'completed'
 
 type PropsType = {
+	todolistId: string
 	title: string
 	tasks: TaskType[]
-	removeTask: (taskId: string) => void
-	addTask: (taskTitle: string) => void
-	changeTaskStatus: (taskId: string, newStatusValue: boolean) => void
+	removeTask: (taskId: string, todolistId: string) => void
+	addTask: (taskTitle: string, todolistId: string) => void
+	changeTaskStatus: (taskId: string, newStatusValue: boolean, todolistId: string) => void
+	removeTodolist: (todolistId: string) => void
 }
 
-export const Todolist = ({title, tasks, removeTask, addTask, changeTaskStatus}: PropsType) => {
+export const Todolist = ({title, tasks, removeTask, addTask, changeTaskStatus, todolistId, removeTodolist}: PropsType) => {
 
 	const [filter, setFilter] = useState('all');
 	const [taskTitle, setTaskTitle] = useState('');
@@ -48,7 +50,7 @@ export const Todolist = ({title, tasks, removeTask, addTask, changeTaskStatus}: 
 		}
 
 		if (isTaskTitleValid) {
-			addTask(taskTitle.trim());
+			addTask(taskTitle.trim(), todolistId);
 			setTaskTitle('');
 		}
 	}
@@ -61,18 +63,25 @@ export const Todolist = ({title, tasks, removeTask, addTask, changeTaskStatus}: 
 	}
 
 	const removeTaskHandler = (taskId: string) => {
-		removeTask(taskId);
+		removeTask(taskId, todolistId);
 	}
 
 	const changeTaskStatusHandler = (taskId: string, e: ChangeEvent<HTMLInputElement>) => {
-		changeTaskStatus(taskId, e.currentTarget.checked)
+		changeTaskStatus(taskId, e.currentTarget.checked, todolistId)
 	}
 
 	const isTaskTitleValid = taskTitle.length < 16;
 
+	const removeTodolistHandler = () => {
+		removeTodolist(todolistId);
+	}
+
 	return (
 		<div className="todolist">
-			<h3>{title}</h3>
+			<div className={'todolist-title-container'}>
+				<h3>{title}</h3>
+				<Button title={'x'} onClick={removeTodolistHandler} />
+			</div>
 			<div>
 				<input
 					value={taskTitle}

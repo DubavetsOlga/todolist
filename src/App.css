@@ -65,3 +65,8 @@ li span {
   opacity: 0.5;
   text-decoration: line-through;
 }
+
+.todolist-title-container {
+  display: flex;
+  align-items: center;
+}
