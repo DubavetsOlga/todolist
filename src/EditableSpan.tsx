@@ -1,3 +1,4 @@
+import { Input } from "@mui/material"
 import { ChangeEvent, useState } from "react"
 
 type PropsType = {
@@ -25,7 +26,14 @@ export const EditableSpan = ({ value, onChange }: PropsType) => {
     return (
         <>
             {editMode 
-                ? <input value={title} onChange={changeTitleHandler} onBlur={deactivateEditModeHandler} autoFocus />
+                ? 
+                <Input
+                    value={title}
+                    size={'small'}
+                    onChange={changeTitleHandler}
+                    onBlur={deactivateEditModeHandler}
+                    autoFocus
+                />
                 : <span onDoubleClick={activateEditModeHandler}>{value}</span>
             }
         </>

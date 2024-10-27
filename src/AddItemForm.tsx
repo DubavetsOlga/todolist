@@ -1,4 +1,6 @@
-import { Button } from './Button'
+import TextField from '@mui/material/TextField'
+import AddBoxIcon from '@mui/icons-material/AddBox'
+import IconButton from '@mui/material/IconButton'
 import { ChangeEvent, KeyboardEvent, useState } from 'react'
 
 type PropsType = {
@@ -37,17 +39,21 @@ export const AddItemForm = ({ addItem }: PropsType) => {
 
     return (
         <div>
-            <input
+            <TextField
+                label="Enter a title"
+                variant={'outlined'}
                 className={error ? 'error' : ''}
                 value={title}
+                size={'small'}
+                error={!!error}
+                helperText={error}
                 onChange={changeItemHandler}
                 onKeyUp={addItemOnKeyUpHandler}
-                placeholder='max length 15'
-				maxLength={15}
             />
-            <Button title={'+'} onClick={addItemHandler} isDisabled={!isTitleValid}/>
+            <IconButton onClick={addItemHandler} color={'primary'} disabled={!isTitleValid}>
+                <AddBoxIcon />
+            </IconButton>
             {!isTitleValid && <div className={'error-message'}>Max length is 15</div>}
-            {error && <div className={'error-message'}>{error}</div>}
         </div>
     )
 }
