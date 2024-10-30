@@ -12,7 +12,7 @@ import ListItem from '@mui/material/ListItem';
 import Box from '@mui/material/Box'
 import { filterButtonsContainerSx, getListItemSx } from './Todolist.styles'
 
-type FilterValuesType = 'all' | 'active' | 'completed'
+export type FilterValuesType = 'all' | 'active' | 'completed'
 
 type PropsType = {
 	todolistId: string

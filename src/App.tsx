@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useReducer, useState } from 'react';
 import './App.css';
 import {Todolist} from "./Todolist";
 import { v1 } from 'uuid';
@@ -14,10 +14,12 @@ import { MenuButton } from './MenuButton';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Switch from '@mui/material/Switch'
 import CssBaseline from '@mui/material/CssBaseline'
+import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer } from './model/tasks-reducer';
+import { addTodolistAC, changeTodolistTitleAC, removeTodolistAC, todolistsReducer } from './model/todolists-reducer';
 
 type ThemeMode = 'dark' | 'light'
 
-type TodolistType = {
+export type TodolistType = {
 	id: string
 	title: string
 }
@@ -36,12 +38,12 @@ const todolistID1 = v1()
 const todolistID2 = v1()
 
 function App() {
-	const [todolists, setTodolists] = useState<TodolistType[]>([
+	const [todolists, dispatchTodolists] = useReducer(todolistsReducer, [
 		{ id: todolistID1, title: 'What to learn'},
 		{ id: todolistID2, title: 'What to buy'},
 	])
 
-	const [tasks, setTasks] = useState<TasksStateType>({
+	const [tasks, dispatchTasks] = useReducer(tasksReducer, {
 		[todolistID1]: [
 			{ id: v1(), title: 'HTML&CSS', isDone: true },
 			{ id: v1(), title: 'JS', isDone: true },
@@ -53,49 +55,44 @@ function App() {
 		],
 	})
 
+	//tasks
+
 	const removeTask = (taskId: string, todolistId: string) => {
-		setTasks({ ...tasks, [todolistId]: tasks[todolistId].filter(t => t.id !== taskId) });
+		dispatchTasks(removeTaskAC(taskId, todolistId))
 	}
 
 	const addTask = (title: string, todolistId: string) => {
-		const newTask = {
-			id: v1(),
-			title: title,
-			isDone: false,
-		}
-		setTasks({ ...tasks, [todolistId]: [newTask, ...tasks[todolistId]] });
+		dispatchTasks(addTaskAC(title, v1(), todolistId))
 	}
 
 	const changeTaskStatus = (taskId: string, taskStatus: boolean, todolistId: string) => {
-		setTasks({
-			...tasks,
-			[todolistId]: tasks[todolistId].map(t => (t.id == taskId ? { ...t, isDone: taskStatus } : t)),
-		});
-	}
-
-	const removeTodolist = (todolistId: string) => {
-		setTodolists(todolists.filter(tl => tl.id !== todolistId));
-
-		delete tasks[todolistId];
-		setTasks({ ...tasks });
-	}
-
-	const addTodolist = (title: string) => {
-		const todolistId = v1();
-		setTodolists([{ id: todolistId, title: title }, ...todolists]);
-		setTasks({ ...tasks, [todolistId]: [] });
+		dispatchTasks(changeTaskStatusAC(taskId, todolistId, taskStatus))
 	}
 
 	const updateTask = (todolistId: string, taskId: string, title: string) => {
-		setTasks({
-			...tasks,
-			[todolistId]: tasks[todolistId].map(t => (t.id === taskId ? { ...t, title } : t)),
-		});
+		dispatchTasks(changeTaskTitleAC(taskId, todolistId, title))
+	}
+
+	//todolists
+
+	const removeTodolist = (todolistId: string) => {
+		dispatchTodolists(removeTodolistAC(todolistId))
+
+		// delete tasks[todolistId];
+		// setTasks({ ...tasks });
+	}
+
+	const addTodolist = (title: string) => {
+		dispatchTodolists(addTodolistAC(v1(), title))
+		
+		//setTasks({ ...tasks, [todolistId]: [] });
 	}
 
 	const updateTodolist = (todolistId: string, title: string) => {
-		setTodolists(todolists.map(tl => (tl.id === todolistId ? { ...tl, title } : tl)));
+		dispatchTodolists(changeTodolistTitleAC(todolistId, title))
 	}
+
+	//other
 
 	const [themeMode, setThemeMode] = useState<ThemeMode>('light')
 
