@@ -1,4 +1,5 @@
 import { TasksStateType } from "../App"
+import { AddTodolistActionType, RemoveTodolistActionType } from "./todolists-reducer"
 
 
 export const tasksReducer = (state: TasksStateType, action: ActionsType): TasksStateType => {
@@ -26,85 +27,45 @@ export const tasksReducer = (state: TasksStateType, action: ActionsType): TasksS
                     state[action.payload.todolistId]
                         .map(t => (t.id == action.payload.id ? { ...t, title: action.payload.title } : t)),
             }
+        case 'REMOVE-TODOLIST': {
+            const newState = { ...state }
+            delete newState[action.payload.id];
+            return newState
+        }
+        case 'ADD-TODOLIST': {
+            return { ...state, [action.payload.id]: [] };
+        }
         default:
             return state
     }
 }
 
-export const removeTaskAC = (id: string, todolistId: string): RemoveTaskActionType => {
-    return {
-        type: 'REMOVE-TASK',
-        payload: { id, todolistId },
-    }
+// Action creators
+export const removeTaskAC = (payload: { id: string; todolistId: string }) => {
+    return { type: 'REMOVE-TASK', payload } as const
 }
 
-type RemoveTaskActionType = {
-    type: 'REMOVE-TASK'
-    payload: {
-        id: string
-        todolistId: string
-    }
+export const addTaskAC = (payload: { title: string, id: string, todolistId: string }) => {
+    return { type: 'ADD-TASK', payload } as const
 }
 
-export const addTaskAC = (title: string, id: string, todolistId: string): AddTaskActionType => {
-    return {
-        type: 'ADD-TASK',
-        payload: {
-            title,
-            id,
-            todolistId
-        },
-    }
+export const changeTaskStatusAC = (payload: { id: string, todolistId: string, taskStatus: boolean }) => {
+    return { type: 'CHANGE-TASK-STATUS', payload } as const
 }
 
-type AddTaskActionType = {
-    type: 'ADD-TASK'
-    payload: {
-        title: string
-        id: string
-        todolistId: string
-    }
+export const changeTaskTitleAC = (payload: { id: string, todolistId: string, title: string }) => {
+    return { type: 'CHANGE-TASK-TITLE', payload } as const
 }
 
-export const changeTaskStatusAC = (id: string, todolistId: string, taskStatus: boolean): ChangeTaskStatusActionType => {
-    return {
-        type: 'CHANGE-TASK-STATUS',
-        payload: {
-            id,
-            todolistId,
-            taskStatus
-        },
-    }
-}
+// Actions types
+export type RemoveTaskActionType = ReturnType<typeof removeTaskAC>
+export type AddTaskActionType = ReturnType<typeof addTaskAC>
+export type ChangeTaskStatusActionType = ReturnType<typeof changeTaskStatusAC>
+export type ChangeTaskTitleActionType = ReturnType<typeof changeTaskTitleAC>
 
-type ChangeTaskStatusActionType = {
-    type: 'CHANGE-TASK-STATUS'
-    payload: {
-        id: string
-        todolistId: string
-        taskStatus: boolean
-    }
-}
-
-export const changeTaskTitleAC = (id: string, todolistId: string, title: string): ChangeTaskTitleActionType => {
-    return {
-        type: 'CHANGE-TASK-TITLE',
-        payload: {
-            id,
-            todolistId,
-            title
-        },
-    }
-}
-
-type ChangeTaskTitleActionType = {
-    type: 'CHANGE-TASK-TITLE'
-    payload: {
-        id: string
-        todolistId: string
-        title: string
-    }
-}
-
-
-type ActionsType = RemoveTaskActionType | AddTaskActionType | ChangeTaskStatusActionType | ChangeTaskTitleActionType
+type ActionsType = RemoveTaskActionType
+    | AddTaskActionType
+    | ChangeTaskStatusActionType
+    | ChangeTaskTitleActionType
+    | RemoveTodolistActionType
+    | AddTodolistActionType

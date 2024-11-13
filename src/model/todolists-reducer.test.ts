@@ -2,15 +2,21 @@ import { addTodolistAC, changeTodolistTitleAC, removeTodolistAC, todolistsReduce
 import { v1 } from 'uuid'
 import { TodolistType } from '../App'
 
-test('correct todolist should be removed', () => {
-    let todolistId1 = v1()
-    let todolistId2 = v1()
+let todolistId1: string
+let todolistId2: string
+let startState: TodolistType[] = []
 
-    const startState: TodolistType[] = [
-        { id: todolistId1, title: 'What to learn'},
+beforeEach(() => {
+    todolistId1 = v1()
+    todolistId2 = v1()
+
+    startState = [
+        { id: todolistId1, title: 'What to learn' },
         { id: todolistId2, title: 'What to buy' },
     ]
+})
 
+test('correct todolist should be removed', () => {
     const endState = todolistsReducer(startState, removeTodolistAC(todolistId1))
 
     expect(endState.length).toBe(1)
@@ -18,34 +24,19 @@ test('correct todolist should be removed', () => {
 })
 
 test('correct todolist should be added', () => {
-    let todolistId1 = v1()
-    let todolistId2 = v1()
-
-    const startState: TodolistType[] = [
-        { id: todolistId1, title: 'What to learn'},
-        { id: todolistId2, title: 'What to buy' },
-    ]
-
     const newTitle = 'New Todolist'
 
-    const endState = todolistsReducer(startState, addTodolistAC(v1(), newTitle))
+    const endState = todolistsReducer(startState, addTodolistAC({ id: v1(), title: newTitle} ))
 
     expect(endState.length).toBe(3)
     expect(endState[2].title).toBe(newTitle)
 })
 
 test('correct todolist should change its title', () => {
-    let todolistId1 = v1()
-    let todolistId2 = v1()
+    const newTitle = 'New Todolist'
 
-    const startState: TodolistType[] = [
-        { id: todolistId1, title: 'What to learn' },
-        { id: todolistId2, title: 'What to buy' },
-    ]
-
-    const endState = todolistsReducer(startState, changeTodolistTitleAC(todolistId1, "New Title"))
+    const endState = todolistsReducer(startState, changeTodolistTitleAC({ id: todolistId1, title: newTitle } ))
 
     expect(endState[0].title).toBe('What to learn')
     expect(endState[1].title).toBe("New Title")
 })
-
