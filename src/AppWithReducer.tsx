@@ -38,12 +38,12 @@ const todolistID1 = v1()
 const todolistID2 = v1()
 
 function App() {
-	const [todolists, dispatchTodolists] = useReducer(todolistsReducer, [
+	const [todolists, dispatchToTodolists] = useReducer(todolistsReducer, [
 		{ id: todolistID1, title: 'What to learn'},
 		{ id: todolistID2, title: 'What to buy'},
 	])
 
-	const [tasks, dispatchTasks] = useReducer(tasksReducer, {
+	const [tasks, dispatchToTasks] = useReducer(tasksReducer, {
 		[todolistID1]: [
 			{ id: v1(), title: 'HTML&CSS', isDone: true },
 			{ id: v1(), title: 'JS', isDone: true },
@@ -58,36 +58,37 @@ function App() {
 	//tasks
 
 	const removeTask = (taskId: string, todolistId: string) => {
-		dispatchTasks(removeTaskAC({ id: taskId, todolistId }))
+		dispatchToTasks(removeTaskAC({ id: taskId, todolistId }))
 	}
 
 	const addTask = (title: string, todolistId: string) => {
-		dispatchTasks(addTaskAC({ title, id: v1(), todolistId }))
+		dispatchToTasks(addTaskAC({ title, id: v1(), todolistId }))
 	}
 
 	const changeTaskStatus = (taskId: string, taskStatus: boolean, todolistId: string) => {
-		dispatchTasks(changeTaskStatusAC({ id: taskId, todolistId, taskStatus }))
+		dispatchToTasks(changeTaskStatusAC({ id: taskId, todolistId, taskStatus }))
 	}
 
 	const updateTask = (todolistId: string, taskId: string, title: string) => {
-		dispatchTasks(changeTaskTitleAC( { id: taskId, todolistId, title }))
+		dispatchToTasks(changeTaskTitleAC( { id: taskId, todolistId, title }))
 	}
 
 	//todolists
 
 	const removeTodolist = (todolistId: string) => {
-		dispatchTodolists(removeTodolistAC(todolistId))
-		dispatchTasks(removeTodolistAC(todolistId))
+		const action = removeTodolistAC(todolistId)
+		dispatchToTodolists(action)
+		dispatchToTasks(action)
 	}
 
 	const addTodolist = (title: string) => {
-		const newId = v1()
-		dispatchTodolists(addTodolistAC({ id: newId, title }))
-		dispatchTasks(addTodolistAC({ id: newId, title }))
+		const action = addTodolistAC({ id: v1(), title })
+		dispatchToTodolists(action)
+		dispatchToTasks(action)
 	}
 
 	const updateTodolist = (todolistId: string, title: string) => {
-		dispatchTodolists(changeTodolistTitleAC({ id: todolistId, title }))
+		dispatchToTodolists(changeTodolistTitleAC({ id: todolistId, title }))
 	}
 
 	//other
