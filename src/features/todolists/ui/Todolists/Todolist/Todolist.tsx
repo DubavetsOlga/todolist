@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { TodolistType } from "./app/App";
-import { AddItemForm } from './AddItemForm';
-import { FilterTasksButtons } from "./features/todolists/ui/Todolists/FilterTasksButtons/FilterTasksButtons";
-import { Tasks } from "./features/todolists/ui/Todolists/Tasks/Tasks";
-import { TodolistTitle } from "./TodolistTitle";
-import { addTaskAC } from "./model/tasks-reducer";
+import { TodolistType } from "../../../../../app/App";
+import { AddItemForm } from '../../../../../common/components/AddItemForm/AddItemForm';
+import { FilterTasksButtons } from "./FilterTasksButtons/FilterTasksButtons";
+import { Tasks } from "./Tasks/Tasks";
+import { TodolistTitle } from "./TodolistTitle/TodolistTitle";
+import { addTaskAC } from "../../../model/tasks-reducer";
 import { v1 } from "uuid";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "../../../../../common/hooks/useAppDispatch";
 
 export type FilterValuesType = 'all' | 'active' | 'completed'
 
@@ -15,7 +15,7 @@ type TodolistPropsType = {
 }
 
 export const Todolist = ({ todolist }: TodolistPropsType) => {
-	const dispatch = useDispatch()
+	const dispatch = useAppDispatch()
 
 	const [filter, setFilter] = useState<FilterValuesType>('all');
 

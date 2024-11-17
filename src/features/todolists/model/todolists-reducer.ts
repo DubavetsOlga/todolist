@@ -1,4 +1,4 @@
-import { TodolistType } from '../app/App'
+import { TodolistType } from '../../../app/App'
 
 const initialState: TodolistType[] = []
 

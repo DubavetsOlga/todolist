@@ -3,11 +3,11 @@ import AddBoxIcon from '@mui/icons-material/AddBox'
 import IconButton from '@mui/material/IconButton'
 import { ChangeEvent, KeyboardEvent, useState } from 'react'
 
-type PropsType = {
+type Props = {
     addItem: (title: string) => void
 }
 
-export const AddItemForm = ({ addItem }: PropsType) => {
+export const AddItemForm = ({ addItem }: Props) => {
     const [title, setTitle] = useState('')
     const [error, setError] = useState<string | null>(null)
     

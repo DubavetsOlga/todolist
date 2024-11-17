@@ -1,10 +1,10 @@
 import List from "@mui/material/List";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../../../app/store";
-import { TasksStateType, TodolistType } from "../../../../../app/App";
-import { FilterValuesType } from "../../../../../Todolist";
-import {Task} from "../../../../../Task";
+import { TodolistType } from "../../../../../../app/App";
+import { FilterValuesType } from "../Todolist";
+import { Task } from "./Task/Task";
+import { useAppSelector } from "../../../../../../common/hooks/useAppSelector";
+import { selectTasks } from "../../../../../../app/appSelectors";
 
 type Props = {
     todolist: TodolistType
@@ -14,7 +14,7 @@ type Props = {
 export const Tasks = ({ todolist, filter }: Props) => {
     const [listRef] = useAutoAnimate<HTMLUListElement>();
 
-    const tasks = useSelector<RootState, TasksStateType>(state => state.tasks)
+    const tasks = useAppSelector(selectTasks)
 
     const allTodolistTasks = tasks[todolist.id]
 

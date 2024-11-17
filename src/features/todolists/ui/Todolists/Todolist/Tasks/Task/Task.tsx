@@ -1,12 +1,12 @@
-import { useDispatch } from "react-redux";
-import { changeTaskStatusAC, changeTaskTitleAC, removeTaskAC } from "./model/tasks-reducer";
+import { changeTaskStatusAC, changeTaskTitleAC, removeTaskAC } from "../../../../../model/tasks-reducer";
 import { ChangeEvent } from "react";
 import { Checkbox, ListItem } from "@mui/material";
-import { getListItemSx } from "./Todolist.styles";
-import { EditableSpan } from "./common/components/EditableSpan/EditableSpan";
+import { EditableSpan } from "../../../../../../../common/components/EditableSpan/EditableSpan";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { TaskType, TodolistType } from "./app/App";
+import { TaskType, TodolistType } from "../../../../../../../app/App";
+import { getListItemSx } from "./Task.styles";
+import { useAppDispatch } from "../../../../../../../common/hooks/useAppDispatch";
 
 type Props = {
     task: TaskType
@@ -14,7 +14,7 @@ type Props = {
 }
 
 export const Task = ({ task, todolist }: Props) => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const removeTaskHandler = () => {
         dispatch(removeTaskAC({ id: task.id, todolistId: todolist.id }))

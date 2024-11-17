@@ -1,4 +1,4 @@
-import { TasksStateType } from "../app/App"
+import { TasksStateType } from "../../../app/App"
 import { AddTodolistActionType, RemoveTodolistActionType } from "./todolists-reducer"
 
 const initialState: TasksStateType = {}

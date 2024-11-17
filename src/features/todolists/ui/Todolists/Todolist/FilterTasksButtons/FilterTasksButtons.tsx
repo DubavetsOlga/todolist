@@ -1,7 +1,8 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { FilterValuesType } from "../../../../../Todolist";
-import { filterButtonsContainerSx } from "../../../../../Todolist.styles";
+import { FilterValuesType } from "../Todolist";
+import { filterButtonsContainerSx } from "./FilterTasksButtons.styles";
+
 
 type Props = {
     filter: FilterValuesType

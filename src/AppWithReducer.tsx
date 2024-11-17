@@ -1,8 +1,8 @@
 import { useReducer, useState } from 'react';
-import './App.css';
-import {Todolist} from "./Todolist";
+import './app/App.css';
+import {Todolist} from "./features/todolists/ui/Todolists/Todolist/Todolist";
 import { v1 } from 'uuid';
-import { AddItemForm } from './AddItemForm';
+import { AddItemForm } from './common/components/AddItemForm/AddItemForm';
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import IconButton from '@mui/material/IconButton'
@@ -10,12 +10,12 @@ import MenuIcon from '@mui/icons-material/Menu'
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid2';
-import { MenuButton } from './MenuButton';
+import { MenuButton } from './common/components/MenuButton/MenuButton';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Switch from '@mui/material/Switch'
 import CssBaseline from '@mui/material/CssBaseline'
-import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer } from './model/tasks-reducer';
-import { addTodolistAC, changeTodolistTitleAC, removeTodolistAC, todolistsReducer } from './model/todolists-reducer';
+import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer } from './features/todolists/model/tasks-reducer';
+import { addTodolistAC, changeTodolistTitleAC, removeTodolistAC, todolistsReducer } from './features/todolists/model/todolists-reducer';
 
 type ThemeMode = 'dark' | 'light'
 
@@ -134,7 +134,7 @@ function App() {
 							return (
 								<Grid>
 									<Paper sx={{ p: '0 20px 20px 20px' }}>
-										<Todolist
+										{/* <Todolist
 											key={tl.id}
 											todolistId={tl.id}
 											title={tl.title}
@@ -145,7 +145,7 @@ function App() {
 											removeTodolist={removeTodolist}
 											updateTask={updateTask}
 											updateTodolist={updateTodolist}
-										/>
+										/> */}
 									</Paper>
 								</Grid>
 							)})}
