@@ -1,105 +1,56 @@
-import Checkbox from '@mui/material/Checkbox'
-import React, { ChangeEvent, useEffect, useState } from 'react'
-import { AddItemForm } from '../common/components/AddItemForm/AddItemForm'
-import { EditableSpan } from '../common/components/EditableSpan/EditableSpan'
-import axios from 'axios'
-
-const baseUrl = 'https://social-network.samuraijs.com/api/1.1/todo-lists'
-
-const options = {
-        headers: {
-        
-    }
-}
-
-type Todolist = {
-    id: string
-    title: string
-    addedDate: string
-    order: number
-}
-
-type FieldError = {
-    error: string
-    field: string
-}
-
-type Response<T = {}> = {
-    data: T
-    resultCode: number
-    messages: string[]
-    fieldsErrors: FieldError[]
-}
-
-type GetTasksResponse = {
-    error: string | null
-    totalCount: number
-    items: DomainTask[]
-}
-
-type DomainTask = {
-    description: string | null
-    title: string
-    status: number
-    priority: number
-    startDate: string | null
-    deadline: string | null
-    id: string
-    todoListId: string
-    order: number
-    addedDate: string
-}
-
-type UpdateTaskModel = Omit<DomainTask, "id" | "todoListId" | "order" | "addedDate">
-
+import Checkbox from "@mui/material/Checkbox"
+import React, { ChangeEvent, useEffect, useState } from "react"
+import { AddItemForm } from "common/components"
+import { EditableSpan } from "common/components"
+import { Todolist } from "../features/todolists/api/todolistsApi.types"
+import { DomainTask, UpdateTaskModel } from "../features/todolists/api/tasksApi.types"
+import { todolistsApi } from "../features/todolists/api/todolistsApi"
+import { tasksApi } from "../features/todolists/api/tasksApi"
+import { TaskStatus } from "common/enums/enums"
 
 export const AppHttpRequests = () => {
     const [todolists, setTodolists] = useState<Todolist[]>([])
     const [tasks, setTasks] = useState<{ [key: string]: DomainTask[] }>({})
 
     useEffect(() => {
-        axios.get<Todolist[]>(baseUrl, options)
-            .then(res => {
-                setTodolists(res.data)
+        todolistsApi.getTodolists().then((res) => {
+            setTodolists(res.data)
 
-                res.data.forEach(tl => {
-                    axios.get<GetTasksResponse>(`${baseUrl}/${tl.id}/tasks`, options)
-                        .then(resTasks => {
-                            setTasks(prev => ({ ...prev, [tl.id]: resTasks.data.items }))
-                        })
-                    })
+            res.data.forEach((tl) => {
+                tasksApi.getTasks(tl.id).then((resTasks) => {
+                    setTasks((prev) => ({ ...prev, [tl.id]: resTasks.data.items }))
+                })
             })
+        })
     }, [])
 
     const createTodolistHandler = (title: string) => {
-        axios.post<Response<{ item: Todolist }>>(baseUrl, { title }, options )
-            .then(res => {
-                const newTodolist = res.data.data.item
-                setTodolists([newTodolist, ...todolists])
-                setTasks(prev => ({ ...prev, [newTodolist.id]: [] }))
-            })
+        todolistsApi.createTodolist(title).then((res) => {
+            const newTodolist = res.data.data.item
+            setTodolists([newTodolist, ...todolists])
+            setTasks((prev) => ({ ...prev, [newTodolist.id]: [] }))
+        })
     }
 
     const removeTodolistHandler = (id: string) => {
-        axios.delete<Response>(`${baseUrl}/${id}`, options)
-            .then(() => setTodolists(prev => prev.filter(tl => tl.id !== id)))
-        }
+        todolistsApi.deleteTodolist(id).then(() => setTodolists((prev) => prev.filter((tl) => tl.id !== id)))
+    }
 
     const updateTodolistHandler = (id: string, title: string) => {
-        axios.put(`${baseUrl}/${id}`, { title }, options)
-            .then(() => setTodolists(prev => prev.map(tl => tl.id === id ? {...tl, title} : tl)))
+        todolistsApi
+            .updateTodolist({ id, title })
+            .then(() => setTodolists((prev) => prev.map((tl) => (tl.id === id ? { ...tl, title } : tl))))
     }
 
     const createTaskHandler = (title: string, todolistId: string) => {
-        axios.post<Response<{ item: DomainTask }>>(`${baseUrl}/${todolistId}/tasks`, { title }, options)
-            .then(res => {
-                const newTask = res.data.data.item
-                setTasks(prev => ({ ...prev, [todolistId]: [newTask, ...prev[todolistId]] }))
-            })
-        }
+        tasksApi.createTasks({ todolistId, title }).then((res) => {
+            const newTask = res.data.data.item
+            setTasks((prev) => ({ ...prev, [todolistId]: [newTask, ...prev[todolistId]] }))
+        })
+    }
 
     const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>, task: DomainTask) => {
-        let status = e.currentTarget.checked ? 2 : 0
+        const status = e.currentTarget.checked ? TaskStatus.Completed : TaskStatus.New
 
         const model: UpdateTaskModel = {
             status,
@@ -110,11 +61,10 @@ export const AppHttpRequests = () => {
             startDate: task.startDate,
         }
 
-        axios.put<Response<{ item: DomainTask }>>(`${baseUrl}/${task.todoListId}/tasks/${task.id}`, model, options)
-            .then(() => {
-                const newTasks = tasks[task.todoListId].map(t => (t.id === task.id ? { ...t, ...model } : t))
-                setTasks({ ...tasks, [task.todoListId]: newTasks })
-            })
+        tasksApi.updateTodolist({ todolistId: task.todoListId, taskId: task.id, model: model }).then(() => {
+            const newTasks = tasks[task.todoListId].map((t) => (t.id === task.id ? { ...t, ...model } : t))
+            setTasks({ ...tasks, [task.todoListId]: newTasks })
+        })
     }
 
     const changeTaskTitleHandler = (title: string, task: DomainTask) => {
@@ -127,24 +77,22 @@ export const AppHttpRequests = () => {
             startDate: task.startDate,
         }
 
-        axios.put<Response<{ item: DomainTask }>>(`${baseUrl}/${task.todoListId}/tasks/${task.id}`, model, options)
-            .then(() => {
-                const newTasks = tasks[task.todoListId].map(t => (t.id === task.id ? { ...t, ...model } : t))
-                setTasks({ ...tasks, [task.todoListId]: newTasks })
-            })
+        tasksApi.updateTodolist({ todolistId: task.todoListId, taskId: task.id, model: model }).then(() => {
+            const newTasks = tasks[task.todoListId].map((t) => (t.id === task.id ? { ...t, ...model } : t))
+            setTasks({ ...tasks, [task.todoListId]: newTasks })
+        })
     }
 
     const removeTaskHandler = (taskId: string, todolistId: string) => {
-        axios.delete<Response>(`${baseUrl}/${todolistId}/tasks/${taskId}`, options)
-            .then(() => setTasks(prev => (
-                { ...prev, [todolistId]: prev[todolistId].filter(t => t.id !== taskId) }
-            ))
-        )
+        tasksApi
+            .deleteTodolist({ todolistId, taskId })
+            .then(() =>
+                setTasks((prev) => ({ ...prev, [todolistId]: prev[todolistId].filter((t) => t.id !== taskId) })),
+            )
     }
 
-
     return (
-        <div style={{ margin: '20px' }}>
+        <div style={{ margin: "20px" }}>
             <AddItemForm addItem={createTodolistHandler} />
 
             {/* Todolists */}
@@ -158,7 +106,7 @@ export const AppHttpRequests = () => {
                             />
                             <button onClick={() => removeTodolistHandler(tl.id)}>x</button>
                         </div>
-                        <AddItemForm addItem={title => createTaskHandler(title, tl.id)} />
+                        <AddItemForm addItem={(title) => createTaskHandler(title, tl.id)} />
 
                         {/* Tasks */}
                         {!!tasks[tl.id] &&
@@ -167,11 +115,11 @@ export const AppHttpRequests = () => {
                                     <div key={task.id}>
                                         <Checkbox
                                             checked={task.status === 2 ? true : false}
-                                            onChange={e => changeTaskStatusHandler(e, task)}
+                                            onChange={(e) => changeTaskStatusHandler(e, task)}
                                         />
                                         <EditableSpan
                                             value={task.title}
-                                            onChange={title => changeTaskTitleHandler(title, task)}
+                                            onChange={(title) => changeTaskTitleHandler(title, task)}
                                         />
                                         <button onClick={() => removeTaskHandler(task.id, tl.id)}>x</button>
                                     </div>
@@ -186,11 +134,11 @@ export const AppHttpRequests = () => {
 
 // Styles
 const todolist: React.CSSProperties = {
-    border: '1px solid black',
-    margin: '20px 0',
-    padding: '10px',
-    width: '300px',
-    display: 'flex',
-    justifyContent: 'space-between',
-    flexDirection: 'column',
+    border: "1px solid black",
+    margin: "20px 0",
+    padding: "10px",
+    width: "300px",
+    display: "flex",
+    justifyContent: "space-between",
+    flexDirection: "column",
 }

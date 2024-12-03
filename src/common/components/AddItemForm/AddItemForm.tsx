@@ -1,38 +1,38 @@
-import TextField from '@mui/material/TextField'
-import AddBoxIcon from '@mui/icons-material/AddBox'
-import IconButton from '@mui/material/IconButton'
-import { ChangeEvent, KeyboardEvent, useState } from 'react'
+import TextField from "@mui/material/TextField"
+import AddBoxIcon from "@mui/icons-material/AddBox"
+import IconButton from "@mui/material/IconButton"
+import { ChangeEvent, KeyboardEvent, useState } from "react"
 
 type Props = {
     addItem: (title: string) => void
 }
 
 export const AddItemForm = ({ addItem }: Props) => {
-    const [title, setTitle] = useState('')
+    const [title, setTitle] = useState("")
     const [error, setError] = useState<string | null>(null)
-    
+
     const addItemHandler = () => {
         if (!title.trim()) {
-			setError('Title is required');
-			setTitle('')
-			return;
-		}
+            setError("Title is required")
+            setTitle("")
+            return
+        }
 
-		if (isTitleValid) {
-			addItem(title.trim())
-			setTitle('')
-		}
+        if (isTitleValid) {
+            addItem(title.trim())
+            setTitle("")
+        }
     }
 
-    const isTitleValid = title.length < 16;
-    
+    const isTitleValid = title.length < 16
+
     const changeItemHandler = (event: ChangeEvent<HTMLInputElement>) => {
         setTitle(event.currentTarget.value)
     }
-    
+
     const addItemOnKeyUpHandler = (event: KeyboardEvent<HTMLInputElement>) => {
-        setError(null);
-        if (event.key === 'Enter') {
+        setError(null)
+        if (event.key === "Enter") {
             addItemHandler()
         }
     }
@@ -41,19 +41,19 @@ export const AddItemForm = ({ addItem }: Props) => {
         <div>
             <TextField
                 label="Enter a title"
-                variant={'outlined'}
-                className={error ? 'error' : ''}
+                variant={"outlined"}
+                className={error ? "error" : ""}
                 value={title}
-                size={'small'}
+                size={"small"}
                 error={!!error}
                 helperText={error}
                 onChange={changeItemHandler}
                 onKeyUp={addItemOnKeyUpHandler}
             />
-            <IconButton onClick={addItemHandler} color={'primary'} disabled={!isTitleValid}>
+            <IconButton onClick={addItemHandler} color={"primary"} disabled={!isTitleValid}>
                 <AddBoxIcon />
             </IconButton>
-            {!isTitleValid && <div className={'error-message'}>Max length is 15</div>}
+            {!isTitleValid && <div className={"error-message"}>Max length is 15</div>}
         </div>
     )
 }

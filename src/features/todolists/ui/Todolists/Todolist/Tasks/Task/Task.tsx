@@ -1,12 +1,12 @@
-import { changeTaskStatusAC, changeTaskTitleAC, removeTaskAC } from "../../../../../model/tasks-reducer";
-import { ChangeEvent } from "react";
-import { Checkbox, ListItem } from "@mui/material";
-import { EditableSpan } from "../../../../../../../common/components/EditableSpan/EditableSpan";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { TaskType, TodolistType } from "../../../../../../../app/App";
-import { getListItemSx } from "./Task.styles";
-import { useAppDispatch } from "../../../../../../../common/hooks/useAppDispatch";
+import { changeTaskStatusAC, changeTaskTitleAC, removeTaskAC } from "../../../../../model/tasks-reducer"
+import { ChangeEvent } from "react"
+import { Checkbox, ListItem } from "@mui/material"
+import { EditableSpan } from "common/components"
+import IconButton from "@mui/material/IconButton"
+import DeleteIcon from "@mui/icons-material/Delete"
+import { TaskType, TodolistType } from "app/App"
+import { getListItemSx } from "./Task.styles"
+import { useAppDispatch } from "common/hooks/useAppDispatch"
 
 type Props = {
     task: TaskType

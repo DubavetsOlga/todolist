@@ -1,5 +1,4 @@
-import {RootState} from "./store";
-import {useAppSelector} from "../common/hooks/useAppSelector";
+import { RootState } from "./store"
 
 export const selectThemeMode = (state: RootState) => state.app.themeMode
 

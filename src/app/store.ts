@@ -1,7 +1,7 @@
-import { combineReducers, legacy_createStore } from 'redux'
-import { tasksReducer } from '../features/todolists/model/tasks-reducer'
-import { todolistsReducer } from '../features/todolists/model/todolists-reducer'
-import {appReducer} from "./app-reducer";
+import { combineReducers, legacy_createStore } from "redux"
+import { tasksReducer } from "../features/todolists/model/tasks-reducer"
+import { todolistsReducer } from "../features/todolists/model/todolists-reducer"
+import { appReducer } from "./app-reducer"
 
 // объединяя reducer-ы с помощью combineReducers,
 // мы задаём структуру нашего единственного объекта-состояния

@@ -1,10 +1,10 @@
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid2";
-import { AddItemForm } from "../common/components/AddItemForm/AddItemForm";
-import { v1 } from "uuid";
-import { addTodolistAC } from "../features/todolists/model/todolists-reducer";
-import { Todolists } from "../features/todolists/ui/Todolists/Todolists";
-import { useAppDispatch } from "../common/hooks/useAppDispatch";
+import Container from "@mui/material/Container"
+import Grid from "@mui/material/Grid2"
+import { AddItemForm } from "../common/components/AddItemForm/AddItemForm"
+import { v1 } from "uuid"
+import { addTodolistAC } from "../features/todolists/model/todolists-reducer"
+import { Todolists } from "../features/todolists/ui/Todolists/Todolists"
+import { useAppDispatch } from "../common/hooks/useAppDispatch"
 
 export const Main = () => {
     const dispatch = useAppDispatch()
@@ -15,7 +15,7 @@ export const Main = () => {
 
     return (
         <Container fixed>
-            <Grid container sx={{ mb: '30px' }}>
+            <Grid container sx={{ mb: "30px" }}>
                 <AddItemForm addItem={addTodolist} />
             </Grid>
             <Grid container spacing={4}>
