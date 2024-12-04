@@ -1,11 +1,10 @@
-import axios from "axios"
-import { Todolist } from "./todolistsApi.types"
+import { TodolistType } from "./todolistsApi.types"
 import { BaseResponse } from "common/types"
 import { instance } from "common/instance/instance"
 
 export const todolistsApi = {
     getTodolists() {
-        return instance.get<Todolist[]>("todo-lists")
+        return instance.get<TodolistType[]>("todo-lists")
     },
 
     updateTodolist(payload: { id: string; title: string }) {
@@ -14,7 +13,7 @@ export const todolistsApi = {
     },
 
     createTodolist(title: string) {
-        return instance.post<BaseResponse<{ item: Todolist }>>("todo-lists", { title })
+        return instance.post<BaseResponse<{ item: TodolistType }>>("todo-lists", { title })
     },
 
     deleteTodolist(id: string) {

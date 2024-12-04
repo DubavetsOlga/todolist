@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { TodolistType } from "app/App"
 import { AddItemForm } from "common/components"
 import { FilterTasksButtons } from "./FilterTasksButtons/FilterTasksButtons"
 import { Tasks } from "./Tasks/Tasks"
@@ -7,6 +6,7 @@ import { TodolistTitle } from "./TodolistTitle/TodolistTitle"
 import { addTaskAC } from "../../../model/tasks-reducer"
 import { v1 } from "uuid"
 import { useAppDispatch } from "common/hooks/useAppDispatch"
+import { TodolistType } from "../../../api/todolistsApi.types"
 
 export type FilterValuesType = "all" | "active" | "completed"
 

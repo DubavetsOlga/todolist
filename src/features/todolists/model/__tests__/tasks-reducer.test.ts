@@ -1,9 +1,9 @@
 import { v1 } from "uuid"
-import { TasksStateType } from "app/App"
+import { TasksType } from "app/App"
 import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer } from "../tasks-reducer"
 import { addTodolistAC, removeTodolistAC } from "../todolists-reducer"
 
-let startState: TasksStateType
+let startState: TasksType
 
 beforeEach(() => {
     startState = {

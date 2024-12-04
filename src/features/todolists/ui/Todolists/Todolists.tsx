@@ -3,9 +3,18 @@ import Paper from "@mui/material/Paper"
 import { Todolist } from "./Todolist/Todolist"
 import { useAppSelector } from "common/hooks/useAppSelector"
 import { selectTodolists } from "app/appSelectors"
+import { useEffect } from "react"
+import { fetchTodolistsThunk } from "../../model/todolists-reducer"
+import { useAppDispatch } from "common/hooks/useAppDispatch"
 
 export const Todolists = () => {
     const todolists = useAppSelector(selectTodolists)
+
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        dispatch(fetchTodolistsThunk)
+    }, [])
 
     return (
         <>

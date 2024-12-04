@@ -2,14 +2,14 @@ import Checkbox from "@mui/material/Checkbox"
 import React, { ChangeEvent, useEffect, useState } from "react"
 import { AddItemForm } from "common/components"
 import { EditableSpan } from "common/components"
-import { Todolist } from "../features/todolists/api/todolistsApi.types"
+import { TodolistType } from "../features/todolists/api/todolistsApi.types"
 import { DomainTask, UpdateTaskModel } from "../features/todolists/api/tasksApi.types"
 import { todolistsApi } from "../features/todolists/api/todolistsApi"
 import { tasksApi } from "../features/todolists/api/tasksApi"
 import { TaskStatus } from "common/enums/enums"
 
 export const AppHttpRequests = () => {
-    const [todolists, setTodolists] = useState<Todolist[]>([])
+    const [todolists, setTodolists] = useState<TodolistType[]>([])
     const [tasks, setTasks] = useState<{ [key: string]: DomainTask[] }>({})
 
     useEffect(() => {
@@ -43,7 +43,7 @@ export const AppHttpRequests = () => {
     }
 
     const createTaskHandler = (title: string, todolistId: string) => {
-        tasksApi.createTasks({ todolistId, title }).then((res) => {
+        tasksApi.createTask({ todolistId, title }).then((res) => {
             const newTask = res.data.data.item
             setTasks((prev) => ({ ...prev, [todolistId]: [newTask, ...prev[todolistId]] }))
         })
@@ -61,7 +61,7 @@ export const AppHttpRequests = () => {
             startDate: task.startDate,
         }
 
-        tasksApi.updateTodolist({ todolistId: task.todoListId, taskId: task.id, model: model }).then(() => {
+        tasksApi.updateTask({ todolistId: task.todoListId, taskId: task.id, model: model }).then(() => {
             const newTasks = tasks[task.todoListId].map((t) => (t.id === task.id ? { ...t, ...model } : t))
             setTasks({ ...tasks, [task.todoListId]: newTasks })
         })
@@ -77,7 +77,7 @@ export const AppHttpRequests = () => {
             startDate: task.startDate,
         }
 
-        tasksApi.updateTodolist({ todolistId: task.todoListId, taskId: task.id, model: model }).then(() => {
+        tasksApi.updateTask({ todolistId: task.todoListId, taskId: task.id, model: model }).then(() => {
             const newTasks = tasks[task.todoListId].map((t) => (t.id === task.id ? { ...t, ...model } : t))
             setTasks({ ...tasks, [task.todoListId]: newTasks })
         })
@@ -85,7 +85,7 @@ export const AppHttpRequests = () => {
 
     const removeTaskHandler = (taskId: string, todolistId: string) => {
         tasksApi
-            .deleteTodolist({ todolistId, taskId })
+            .deleteTask({ todolistId, taskId })
             .then(() =>
                 setTasks((prev) => ({ ...prev, [todolistId]: prev[todolistId].filter((t) => t.id !== taskId) })),
             )
