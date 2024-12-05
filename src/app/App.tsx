@@ -7,7 +7,6 @@ import { Main } from "./Main"
 import { useAppSelector } from "common/hooks/useAppSelector"
 import { selectThemeMode } from "./appSelectors"
 
-
 function App() {
     const themeMode = useAppSelector(selectThemeMode)
     const theme = getTheme(themeMode)

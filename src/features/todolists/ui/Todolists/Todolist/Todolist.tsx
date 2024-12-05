@@ -3,7 +3,7 @@ import { AddItemForm } from "common/components"
 import { FilterTasksButtons } from "./FilterTasksButtons/FilterTasksButtons"
 import { Tasks } from "./Tasks/Tasks"
 import { TodolistTitle } from "./TodolistTitle/TodolistTitle"
-import { addTaskAC } from "../../../model/tasks-reducer"
+import { addTaskAC, addTaskTC } from "../../../model/tasks-reducer"
 import { v1 } from "uuid"
 import { useAppDispatch } from "common/hooks/useAppDispatch"
 import { TodolistType } from "../../../api/todolistsApi.types"
@@ -24,7 +24,7 @@ export const Todolist = ({ todolist }: TodolistPropsType) => {
     }
 
     const addTask = (title: string) => {
-        dispatch(addTaskAC({ title, id: v1(), todolistId: todolist.id }))
+        dispatch(addTaskTC({ title, todolistId: todolist.id }))
     }
 
     return (

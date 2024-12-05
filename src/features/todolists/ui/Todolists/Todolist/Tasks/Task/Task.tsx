@@ -1,4 +1,4 @@
-import { changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, removeTaskTC } from "../../../../../model/tasks-reducer"
+import { removeTaskTC, updateTaskTC } from "../../../../../model/tasks-reducer"
 import { ChangeEvent } from "react"
 import { Checkbox, ListItem } from "@mui/material"
 import { EditableSpan } from "common/components"
@@ -23,12 +23,14 @@ export const Task = ({ task, todolist }: Props) => {
     }
 
     const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        const isDone = e.currentTarget.checked
-        dispatch(changeTaskStatusAC({ id: task.id, taskStatus: isDone, todolistId: todolist.id }))
+        const status = e.currentTarget.checked ? TaskStatus.Completed : TaskStatus.New
+        const newTask: DomainTask = {...task, status}
+        dispatch(updateTaskTC({ task: newTask }))
     }
 
     const changeTaskTitleHandler = (title: string) => {
-        dispatch(changeTaskTitleAC({ id: task.id, title, todolistId: todolist.id }))
+        const newTask: DomainTask = {...task, title}
+        dispatch(updateTaskTC({ task: newTask }))
     }
 
     return (
