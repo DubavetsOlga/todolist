@@ -8,13 +8,14 @@ import { changeThemeAC } from "app/app-reducer"
 import { useAppSelector } from "common/hooks/useAppSelector"
 import { useAppDispatch } from "common/hooks/useAppDispatch"
 import { getTheme } from "common/theme/theme"
+import { logoutTC } from "../../../features/auth/model/auth-reducer"
+import { selectIsLoggedIn } from "app/appSelectors"
 
 export const Header = () => {
     const themeMode = useAppSelector((state) => state.app.themeMode)
-
     const dispatch = useAppDispatch()
-
     const theme = getTheme(themeMode)
+    const isLoggedIn = useAppSelector(selectIsLoggedIn)
 
     const changeModeHandler = () => {
         dispatch(changeThemeAC(themeMode === "light" ? "dark" : "light"))
@@ -27,8 +28,7 @@ export const Header = () => {
                     <MenuIcon />
                 </IconButton>
                 <div>
-                    <MenuButton>Login</MenuButton>
-                    <MenuButton>Logout</MenuButton>
+                    {isLoggedIn && <MenuButton onClick={logoutTC}>Logout</MenuButton>}
                     <MenuButton background={theme.palette.primary.dark}>Faq</MenuButton>
                     <Switch color={"default"} onChange={changeModeHandler} />
                 </div>

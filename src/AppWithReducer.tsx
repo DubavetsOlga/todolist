@@ -2,7 +2,7 @@ function App() {
     return <></>
 }
 // import { useReducer, useState } from "react"
-// import "./app/App.css"
+// import "./app/App.module.css"
 // import { Todolist } from "./features/todolists/ui/Todolists/Todolist/Todolist"
 // import { v1 } from "uuid"
 // import { AddItemForm } from "./common/components/AddItemForm/AddItemForm"

@@ -4,9 +4,24 @@ import { AddItemForm } from "common/components"
 import { addTodolistTC } from "../features/todolists/model/todolists-reducer"
 import { Todolists } from "../features/todolists/ui/Todolists/Todolists"
 import { useAppDispatch } from "common/hooks/useAppDispatch"
+import { useNavigate } from "react-router"
+import { useAppSelector } from "common/hooks/useAppSelector"
+import { useEffect } from "react"
+import { selectIsLoggedIn } from "app/appSelectors"
+import { Path } from "common/routing/Routing"
 
 export const Main = () => {
     const dispatch = useAppDispatch()
+
+    const navigate = useNavigate()
+
+    const isLoggedIn = useAppSelector(selectIsLoggedIn)
+
+    useEffect(() => {
+        if (!isLoggedIn) {
+            navigate(Path.Login)
+        }
+    }, [isLoggedIn])
 
     const addTodolist = (title: string) => {
         dispatch(addTodolistTC(title))

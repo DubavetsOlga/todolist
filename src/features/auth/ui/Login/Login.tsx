@@ -5,12 +5,16 @@ import FormControlLabel from "@mui/material/FormControlLabel"
 import FormGroup from "@mui/material/FormGroup"
 import FormLabel from "@mui/material/FormLabel"
 import TextField from "@mui/material/TextField"
-import { selectThemeMode } from "app/appSelectors"
+import { selectIsLoggedIn, selectThemeMode } from "app/appSelectors"
 import { getTheme } from "common/theme/theme"
 import { useAppSelector } from "common/hooks/useAppSelector"
 import Grid from "@mui/material/Grid2"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import s from "./Login.module.css"
+import { loginTC } from "../../model/auth-reducer"
+import { useNavigate } from "react-router"
+import { useEffect } from "react"
+import { Path } from "common/routing/Routing"
 
 type Inputs = {
     email: string
@@ -21,6 +25,15 @@ type Inputs = {
 export const Login = () => {
     const themeMode = useAppSelector(selectThemeMode)
     const theme = getTheme(themeMode)
+    const isLoggedIn = useAppSelector(selectIsLoggedIn)
+
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            navigate(Path.Main)
+        }
+    }, [isLoggedIn])
 
     const {
         register,
@@ -31,6 +44,7 @@ export const Login = () => {
     } = useForm<Inputs>({ defaultValues: { email: "", password: "", rememberMe: false } })
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
+        loginTC(data)
         reset()
     }
 
