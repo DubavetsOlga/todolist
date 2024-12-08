@@ -45,7 +45,7 @@ export const Login = () => {
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         loginTC(data)
-        reset()
+        //reset()
     }
 
     return (

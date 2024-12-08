@@ -2,7 +2,7 @@ import s from "./App.module.css"
 import { ThemeProvider } from "@mui/material/styles"
 import CssBaseline from "@mui/material/CssBaseline"
 import { getTheme } from "common/theme/theme"
-import { Header } from "common/components"
+import { ErrorSnackbar, Header } from "common/components"
 import { useAppSelector } from "common/hooks/useAppSelector"
 import { selectIsInitialized, selectThemeMode } from "./appSelectors"
 import { Routing } from "common/routing"
@@ -36,6 +36,7 @@ function App() {
                 <CssBaseline />
                 <Header />
                 <Routing />
+                <ErrorSnackbar />
             </ThemeProvider>
         </div>
     )

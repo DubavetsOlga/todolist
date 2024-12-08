@@ -3,15 +3,14 @@ import { AddItemForm } from "common/components"
 import { FilterTasksButtons } from "./FilterTasksButtons/FilterTasksButtons"
 import { Tasks } from "./Tasks/Tasks"
 import { TodolistTitle } from "./TodolistTitle/TodolistTitle"
-import { addTaskAC, addTaskTC } from "../../../model/tasks-reducer"
-import { v1 } from "uuid"
+import { addTaskTC } from "../../../model/tasks-reducer"
 import { useAppDispatch } from "common/hooks/useAppDispatch"
-import { TodolistType } from "../../../api/todolistsApi.types"
+import { DomainTodolist } from "../../../model/todolists-reducer"
 
 export type FilterValuesType = "all" | "active" | "completed"
 
 type TodolistPropsType = {
-    todolist: TodolistType
+    todolist: DomainTodolist
 }
 
 export const Todolist = ({ todolist }: TodolistPropsType) => {
@@ -23,14 +22,14 @@ export const Todolist = ({ todolist }: TodolistPropsType) => {
         setFilter(newFilterValue)
     }
 
-    const addTask = (title: string) => {
+    const addTaskCallback = (title: string) => {
         dispatch(addTaskTC({ title, todolistId: todolist.id }))
     }
 
     return (
         <div className="todolist">
             <TodolistTitle todolist={todolist} />
-            <AddItemForm addItem={addTask} />
+            <AddItemForm addItem={addTaskCallback} disabled={todolist.entityStatus === "loading"} />
             <Tasks filter={filter} todolist={todolist} />
             <FilterTasksButtons filter={filter} changeFilter={changeFilterHandler} />
         </div>

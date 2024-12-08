@@ -4,7 +4,7 @@ import { Todolist } from "./Todolist/Todolist"
 import { useAppSelector } from "common/hooks/useAppSelector"
 import { selectTodolists } from "app/appSelectors"
 import { useEffect } from "react"
-import { fetchTodolistsThunk } from "../../model/todolists-reducer"
+import { fetchTodolistsTC } from "../../model/todolists-reducer"
 import { useAppDispatch } from "common/hooks/useAppDispatch"
 
 export const Todolists = () => {
@@ -13,7 +13,7 @@ export const Todolists = () => {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        dispatch(fetchTodolistsThunk)
+        dispatch(fetchTodolistsTC)
     }, [])
 
     return (

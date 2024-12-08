@@ -2,6 +2,10 @@ import { AddTodolistActionType, RemoveTodolistActionType } from "./todolists-red
 import { Dispatch } from "redux"
 import { tasksApi } from "../api/tasksApi"
 import { DomainTask, UpdateTaskModel } from "../api/tasksApi.types"
+import { setAppErrorAC, setAppStatusAC } from "app/app-reducer"
+import { ResultCode } from "common/enums/enums"
+import { handleServerAppError } from "common/utils/handleServerAppError"
+import { handleServerNetworkError } from "common/utils/handleServerNetworkError"
 
 export type TasksType = {
     [key: string]: DomainTask[]
@@ -82,25 +86,41 @@ type ActionsType =
 
 //Thunks
 export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC("loading"))
     tasksApi.getTasks(todolistId).then((res) => {
         const tasks = res.data.items
         dispatch(setTasksAC({ todolistId, tasks }))
+        dispatch(setAppStatusAC("succeeded"))
     })
 }
 
 export const removeTaskTC = (arg: { taskId: string; todolistId: string }) => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC("loading"))
     tasksApi.deleteTask(arg).then(() => {
         dispatch(removeTaskAC(arg))
+        dispatch(setAppStatusAC("succeeded"))
     })
 }
 
 export const addTaskTC = (arg: { title: string; todolistId: string }) => (dispatch: Dispatch) => {
-    tasksApi.createTask(arg).then((res) => {
-        dispatch(addTaskAC({ task: res.data.data.item }))
-    })
+    dispatch(setAppStatusAC("loading"))
+    tasksApi
+        .createTask(arg)
+        .then((res) => {
+            if (res.data.resultCode === ResultCode.Success) {
+                dispatch(addTaskAC({ task: res.data.data.item }))
+                dispatch(setAppStatusAC("succeeded"))
+            } else {
+                handleServerAppError(res.data, dispatch)
+            }
+        })
+        .catch((error) => {
+            handleServerNetworkError(error, dispatch)
+        })
 }
 
 export const updateTaskTC = (arg: { task: DomainTask }) => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC("loading"))
     const task = arg.task
     const model: UpdateTaskModel = {
         status: task.status,
@@ -111,7 +131,17 @@ export const updateTaskTC = (arg: { task: DomainTask }) => (dispatch: Dispatch) 
         startDate: task.startDate,
     }
 
-    tasksApi.updateTask({ taskId: task.id, todolistId: task.todoListId, model }).then((res) => {
-        dispatch(updateTaskAC({ task: res.data.data.item }))
-    })
+    tasksApi
+        .updateTask({ taskId: task.id, todolistId: task.todoListId, model })
+        .then((res) => {
+            if (res.data.resultCode === ResultCode.Success) {
+                dispatch(updateTaskAC({ task: res.data.data.item }))
+                dispatch(setAppStatusAC("succeeded"))
+            } else {
+                handleServerAppError(res.data, dispatch)
+            }
+        })
+        .catch((error) => {
+            handleServerNetworkError(error, dispatch)
+        })
 }

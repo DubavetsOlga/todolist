@@ -10,9 +10,11 @@ import { useAppDispatch } from "common/hooks/useAppDispatch"
 import { getTheme } from "common/theme/theme"
 import { logoutTC } from "../../../features/auth/model/auth-reducer"
 import { selectIsLoggedIn } from "app/appSelectors"
+import { LinearProgress } from "@mui/material"
 
 export const Header = () => {
     const themeMode = useAppSelector((state) => state.app.themeMode)
+    const status = useAppSelector((state) => state.app.status)
     const dispatch = useAppDispatch()
     const theme = getTheme(themeMode)
     const isLoggedIn = useAppSelector(selectIsLoggedIn)
@@ -33,6 +35,7 @@ export const Header = () => {
                     <Switch color={"default"} onChange={changeModeHandler} />
                 </div>
             </Toolbar>
+            {status === "loading" && <LinearProgress />}
         </AppBar>
     )
 }
