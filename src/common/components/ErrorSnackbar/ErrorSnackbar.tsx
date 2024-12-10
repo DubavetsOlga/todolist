@@ -3,16 +3,18 @@ import Alert from '@mui/material/Alert'
 import Snackbar from '@mui/material/Snackbar'
 import { useAppSelector } from "common/hooks/useAppSelector"
 import { setAppErrorAC } from "app/app-reducer"
+import { useAppDispatch } from "common/hooks/useAppDispatch"
 
 export const ErrorSnackbar = () => {
     const error = useAppSelector((state) => state.app.error)
+    const dispatch = useAppDispatch()
 
     const handleClose = (event: SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
             return
         }
 
-        setAppErrorAC(null)
+        dispatch(setAppErrorAC(null))
     }
 
     return (

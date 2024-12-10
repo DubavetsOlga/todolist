@@ -23,6 +23,7 @@ export const authReducer = (state: InitialStateType = initialState, action: SetI
             return state
     }
 }
+
 // Action creators
 const setIsLoggedInAC = (isLoggedIn: boolean) => {
     return { type: "SET_IS_LOGGED_IN", payload: { isLoggedIn } } as const

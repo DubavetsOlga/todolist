@@ -23,6 +23,10 @@ export const Header = () => {
         dispatch(changeThemeAC(themeMode === "light" ? "dark" : "light"))
     }
 
+    const onLogout = () => {
+        dispatch(logoutTC())
+    }
+
     return (
         <AppBar position="static" sx={{ mb: "30px" }}>
             <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -30,9 +34,9 @@ export const Header = () => {
                     <MenuIcon />
                 </IconButton>
                 <div>
-                    {isLoggedIn && <MenuButton onClick={logoutTC}>Logout</MenuButton>}
+                    {isLoggedIn && <MenuButton onClick={onLogout}>Logout</MenuButton>}
                     <MenuButton background={theme.palette.primary.dark}>Faq</MenuButton>
-                    <Switch color={"default"} onChange={changeModeHandler} />
+                    <Switch color={"default"} onChange={changeModeHandler} checked={themeMode === "dark"}/>
                 </div>
             </Toolbar>
             {status === "loading" && <LinearProgress />}

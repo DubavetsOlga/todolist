@@ -2,9 +2,10 @@ export type ThemeMode = "dark" | "light"
 export type RequestStatus = "idle" | "loading" | "succeeded" | "failed"
 
 type InitialState = typeof initialState
+const theme = localStorage.getItem('theme') ?? 'light'
 
 const initialState = {
-    themeMode: "light" as ThemeMode,
+    themeMode: theme as ThemeMode,
     status: "idle" as RequestStatus,
     error: null as string | null,
 }
@@ -12,6 +13,7 @@ const initialState = {
 export const appReducer = (state: InitialState = initialState, action: ActionsType): InitialState => {
     switch (action.type) {
         case "CHANGE_THEME":
+            localStorage.setItem("theme", action.payload.themeMode)
             return { ...state, themeMode: action.payload.themeMode }
         case "SET_STATUS":
             return { ...state, status: action.payload.status }

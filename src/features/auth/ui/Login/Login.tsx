@@ -5,8 +5,7 @@ import FormControlLabel from "@mui/material/FormControlLabel"
 import FormGroup from "@mui/material/FormGroup"
 import FormLabel from "@mui/material/FormLabel"
 import TextField from "@mui/material/TextField"
-import { selectIsLoggedIn, selectThemeMode } from "app/appSelectors"
-import { getTheme } from "common/theme/theme"
+import { selectIsLoggedIn } from "app/appSelectors"
 import { useAppSelector } from "common/hooks/useAppSelector"
 import Grid from "@mui/material/Grid2"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
@@ -15,6 +14,7 @@ import { loginTC } from "../../model/auth-reducer"
 import { useNavigate } from "react-router"
 import { useEffect } from "react"
 import { Path } from "common/routing/Routing"
+import { useAppDispatch } from "common/hooks/useAppDispatch"
 
 type Inputs = {
     email: string
@@ -23,8 +23,6 @@ type Inputs = {
 }
 
 export const Login = () => {
-    const themeMode = useAppSelector(selectThemeMode)
-    const theme = getTheme(themeMode)
     const isLoggedIn = useAppSelector(selectIsLoggedIn)
 
     const navigate = useNavigate()
@@ -43,8 +41,10 @@ export const Login = () => {
         formState: { errors },
     } = useForm<Inputs>({ defaultValues: { email: "", password: "", rememberMe: false } })
 
+    const dispatch = useAppDispatch()
+
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        loginTC(data)
+        dispatch(loginTC(data))
         //reset()
     }
 
@@ -55,7 +55,7 @@ export const Login = () => {
                     <p>
                         To login get registered
                         <a
-                            style={{ color: theme.palette.primary.main, marginLeft: "5px" }}
+                            style={{ marginLeft: "5px" }}
                             href={"https://social-network.samuraijs.com/"}
                             target={"_blank"}
                             rel="noreferrer"
