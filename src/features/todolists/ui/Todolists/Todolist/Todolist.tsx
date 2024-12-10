@@ -30,7 +30,7 @@ export const Todolist = ({ todolist }: TodolistPropsType) => {
         <div className="todolist">
             <TodolistTitle todolist={todolist} />
             <AddItemForm addItem={addTaskCallback} disabled={todolist.entityStatus === "loading"} />
-            <Tasks filter={filter} todolist={todolist} />
+            <Tasks filter={filter} todolist={todolist}/>
             <FilterTasksButtons filter={filter} changeFilter={changeFilterHandler} />
         </div>
     )

@@ -8,10 +8,10 @@ import { TaskStatus } from "common/enums/enums"
 import { useAppDispatch } from "common/hooks/useAppDispatch"
 import { useEffect } from "react"
 import { fetchTasksTC } from "../../../../model/tasks-reducer"
-import { TodolistType } from "../../../../api/todolistsApi.types"
+import { DomainTodolist } from "../../../../model/todolists-reducer"
 
 type Props = {
-    todolist: TodolistType
+    todolist: DomainTodolist
     filter: FilterValuesType
 }
 
@@ -48,7 +48,7 @@ export const Tasks = ({ todolist, filter }: Props) => {
             ) : (
                 <List ref={listRef}>
                     {filteredTasks.map((task) => {
-                        return <Task task={task} todolist={todolist} />
+                        return <Task task={task} todolist={todolist} key={task.id}/>
                     })}
                 </List>
             )}
