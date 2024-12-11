@@ -10,3 +10,8 @@
     margin: 0;
     text-transform: uppercase;
 }
+
+.buttonBox {
+    display: flex;
+    justify-content: center;
+}
