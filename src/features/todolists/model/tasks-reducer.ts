@@ -1,4 +1,4 @@
-import { AddTodolistActionType, RemoveTodolistActionType } from "./todolists-reducer"
+import { AddTodolistActionType, ClearStateActionType, RemoveTodolistActionType } from "./todolists-reducer"
 import { Dispatch } from "redux"
 import { tasksApi } from "../api/tasksApi"
 import { DomainTask, UpdateTaskModel } from "../api/tasksApi.types"
@@ -13,7 +13,7 @@ export type TasksType = {
 
 const initialState: TasksType = {}
 
-export const tasksReducer = (state: TasksType = initialState, action: ActionsType): TasksType => {
+export const tasksReducer = (state: TasksType = initialState, action: TaskActionTypes): TasksType => {
     switch (action.type) {
         case "SET-TASKS": {
             const stateCopy = { ...state }
@@ -44,6 +44,9 @@ export const tasksReducer = (state: TasksType = initialState, action: ActionsTyp
         }
         case "ADD_TODOLIST": {
             return { ...state, [action.payload.todolist.id]: [] }
+        }
+        case "CLEAR_STATE": {
+            return {}
         }
         default:
             return state
@@ -76,13 +79,14 @@ export type AddTaskActionType = ReturnType<typeof addTaskAC>
 export type UpdateTaskActionType = ReturnType<typeof updateTaskAC>
 export type SetTasksAC = ReturnType<typeof setTasksAC>
 
-type ActionsType =
+export type TaskActionTypes =
     | RemoveTaskActionType
     | AddTaskActionType
     | UpdateTaskActionType
     | RemoveTodolistActionType
     | AddTodolistActionType
     | SetTasksAC
+    | ClearStateActionType
 
 //Thunks
 export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch) => {

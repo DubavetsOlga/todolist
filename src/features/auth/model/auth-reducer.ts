@@ -5,6 +5,7 @@ import { setAppStatusAC } from "app/app-reducer"
 import { ResultCode } from "common/enums/enums"
 import { handleServerAppError } from "common/utils/handleServerAppError"
 import { handleServerNetworkError } from "common/utils/handleServerNetworkError"
+import { clearStateAC } from "../../todolists/model/todolists-reducer"
 
 type InitialStateType = typeof initialState
 
@@ -13,7 +14,7 @@ const initialState = {
     isInitialized: false,
 }
 
-export const authReducer = (state: InitialStateType = initialState, action: SetIsLoggedInActionsType | SetIsInitializedACActionsType): InitialStateType => {
+export const authReducer = (state: InitialStateType = initialState, action: AuthActionTypes): InitialStateType => {
     switch (action.type) {
         case "SET_IS_LOGGED_IN":
             return { ...state, isLoggedIn: action.payload.isLoggedIn }
@@ -36,6 +37,8 @@ const setIsInitializedAC = (isInitialized: boolean) => {
 // Actions types
 type SetIsLoggedInActionsType = ReturnType<typeof setIsLoggedInAC>
 type SetIsInitializedACActionsType = ReturnType<typeof setIsInitializedAC>
+
+export type AuthActionTypes = SetIsLoggedInActionsType | SetIsInitializedACActionsType
 
 // thunks
 export const loginTC = (data: LoginArgs) => (dispatch: Dispatch) => {
@@ -65,6 +68,7 @@ export const logoutTC = () => (dispatch: Dispatch) => {
                 dispatch(setAppStatusAC("succeeded"))
                 dispatch(setIsLoggedInAC(false))
                 localStorage.removeItem("sn-token")
+                dispatch(clearStateAC())
             } else {
                 handleServerAppError(res.data, dispatch)
             }

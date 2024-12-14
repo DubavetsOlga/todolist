@@ -25,7 +25,7 @@ export const AddItemForm = ({ addItem, disabled }: Props) => {
         }
     }
 
-    const isTitleValid = title.length < 16
+    const isTitleValid = title.length <= 100
 
     const changeItemHandler = (event: ChangeEvent<HTMLInputElement>) => {
         setTitle(event.currentTarget.value)
