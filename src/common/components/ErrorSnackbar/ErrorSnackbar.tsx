@@ -2,7 +2,7 @@ import { SyntheticEvent } from 'react'
 import Alert from '@mui/material/Alert'
 import Snackbar from '@mui/material/Snackbar'
 import { useAppSelector } from "common/hooks/useAppSelector"
-import { setAppErrorAC } from "app/app-reducer"
+import { setAppErrorAC } from "app/appSlice"
 import { useAppDispatch } from "common/hooks/useAppDispatch"
 
 export const ErrorSnackbar = () => {

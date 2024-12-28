@@ -8,7 +8,7 @@ import { selectIsInitialized, selectThemeMode } from "./appSelectors"
 import { Routing } from "common/routing"
 import { useAppDispatch } from "common/hooks/useAppDispatch"
 import { useEffect } from "react"
-import { initializeAppTC } from "../features/auth/model/auth-reducer"
+import { initializeAppTC } from "../features/auth/model/authSlice"
 import CircularProgress from '@mui/material/CircularProgress'
 
 function App() {

@@ -1,7 +1,7 @@
 import { TodolistType } from "../api/todolistsApi.types"
 import { Dispatch } from "redux"
 import { todolistsApi } from "../api/todolistsApi"
-import { RequestStatus, setAppStatusAC } from "app/app-reducer"
+import { RequestStatus, setAppStatusAC } from "app/appSlice"
 import { handleServerNetworkError } from "common/utils/handleServerNetworkError"
 import { ResultCode } from "common/enums/enums"
 import { handleServerAppError } from "common/utils/handleServerAppError"

@@ -2,7 +2,7 @@ import { AddTodolistActionType, ClearStateActionType, RemoveTodolistActionType }
 import { Dispatch } from "redux"
 import { tasksApi } from "../api/tasksApi"
 import { DomainTask, UpdateTaskModel } from "../api/tasksApi.types"
-import { setAppStatusAC } from "app/app-reducer"
+import { setAppStatusAC } from "app/appSlice"
 import { ResultCode } from "common/enums/enums"
 import { handleServerAppError } from "common/utils/handleServerAppError"
 import { handleServerNetworkError } from "common/utils/handleServerNetworkError"
