@@ -28,7 +28,7 @@ function App() {
 //     addTodolistAC,
 //     changeTodolistTitleAC,
 //     removeTodolistAC,
-//     todolistsReducer,
+//     todolistsSlice,
 // } from "./features/todolists/model/todolists-reducer"
 //
 // type ThemeMode = "dark" | "light"
@@ -52,7 +52,7 @@ function App() {
 // const todolistID2 = v1()
 //
 // function App() {
-//     const [todolists, dispatchToTodolists] = useReducer(todolistsReducer, [
+//     const [todolists, dispatchToTodolists] = useReducer(todolistsSlice, [
 //         { id: todolistID1, title: "What to learn" },
 //         { id: todolistID2, title: "What to buy" },
 //     ])

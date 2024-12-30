@@ -8,7 +8,7 @@ import { getListItemSx } from "./Task.styles"
 import { useAppDispatch } from "common/hooks/useAppDispatch"
 import { DomainTask } from "../../../../../api/tasksApi.types"
 import { TaskStatus } from "common/enums/enums"
-import { DomainTodolist } from "../../../../../model/todolists-reducer"
+import { DomainTodolist } from "../../../../../model/todolistsSlice"
 
 type Props = {
     task: DomainTask

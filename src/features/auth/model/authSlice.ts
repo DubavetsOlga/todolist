@@ -5,7 +5,7 @@ import { setAppStatus } from "app/appSlice"
 import { ResultCode } from "common/enums/enums"
 import { handleServerAppError } from "common/utils/handleServerAppError"
 import { handleServerNetworkError } from "common/utils/handleServerNetworkError"
-import { clearStateAC } from "../../todolists/model/todolists-reducer"
+import { clearTodolists } from "../../todolists/model/todolistsSlice"
 import { createSlice } from "@reduxjs/toolkit"
 
 export const authSlice = createSlice({
@@ -59,7 +59,7 @@ export const logoutTC = () => (dispatch: Dispatch) => {
                 dispatch(setAppStatus({ status: "succeeded" }))
                 dispatch(setIsLoggedIn({ isLoggedIn: false }))
                 localStorage.removeItem("sn-token")
-                dispatch(clearStateAC())
+                dispatch(clearTodolists())
             } else {
                 handleServerAppError(res.data, dispatch)
             }

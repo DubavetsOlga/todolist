@@ -5,7 +5,7 @@ import { Tasks } from "./Tasks/Tasks"
 import { TodolistTitle } from "./TodolistTitle/TodolistTitle"
 import { addTaskTC } from "../../../model/tasks-reducer"
 import { useAppDispatch } from "common/hooks/useAppDispatch"
-import { DomainTodolist } from "../../../model/todolists-reducer"
+import { DomainTodolist } from "../../../model/todolistsSlice"
 
 export type FilterValuesType = "all" | "active" | "completed"
 

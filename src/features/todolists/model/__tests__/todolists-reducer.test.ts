@@ -1,4 +1,4 @@
-import { addTodolistAC, changeTodolistTitleAC, removeTodolistAC, todolistsReducer } from "../todolists-reducer"
+import { addTodolistAC, changeTodolistTitleAC, removeTodolistAC, todolistsSlice } from "../todolistsSlice"
 import { v1 } from "uuid"
 import { TodolistType } from "../../api/todolistsApi.types"
 
@@ -27,7 +27,7 @@ beforeEach(() => {
 })
 
 test("correct todolist should be removed", () => {
-    const endState = todolistsReducer(startState, removeTodolistAC({ id: todolistId1 }))
+    const endState = todolistsSlice(startState, removeTodolistAC({ id: todolistId1 }))
 
     expect(endState.length).toBe(1)
     expect(endState[0].id).toBe(todolistId2)
@@ -36,7 +36,7 @@ test("correct todolist should be removed", () => {
 test("correct todolist should be added", () => {
     const newTitle = "New Todolist"
 
-    const endState = todolistsReducer(
+    const endState = todolistsSlice(
         startState,
         addTodolistAC({
             todolist: {
@@ -55,7 +55,7 @@ test("correct todolist should be added", () => {
 test("correct todolist should change its title", () => {
     const newTitle = "New Todolist"
 
-    const endState = todolistsReducer(startState, changeTodolistTitleAC({ id: todolistId1, title: newTitle }))
+    const endState = todolistsSlice(startState, changeTodolistTitleAC({ id: todolistId1, title: newTitle }))
 
     expect(endState[0].title).toBe(newTitle)
     expect(endState[1].title).toBe("What to buy")

@@ -8,7 +8,7 @@ import { TaskStatus } from "common/enums/enums"
 import { useAppDispatch } from "common/hooks/useAppDispatch"
 import { useEffect } from "react"
 import { fetchTasksTC } from "../../../../model/tasks-reducer"
-import { DomainTodolist } from "../../../../model/todolists-reducer"
+import { DomainTodolist } from "../../../../model/todolistsSlice"
 
 type Props = {
     todolist: DomainTodolist

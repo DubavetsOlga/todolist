@@ -1,6 +1,6 @@
 import { combineReducers, UnknownAction } from "redux"
 import { tasksReducer } from "../features/todolists/model/tasks-reducer"
-import { todolistsReducer } from "../features/todolists/model/todolists-reducer"
+import { todolistsSlice } from "../features/todolists/model/todolistsSlice"
 import { appReducer } from "./appSlice"
 import { ThunkAction, ThunkDispatch } from "redux-thunk"
 import { authReducer } from "../features/auth/model/authSlice"
@@ -10,7 +10,7 @@ import { configureStore } from "@reduxjs/toolkit"
 // мы задаём структуру нашего единственного объекта-состояния
 const rootReducer = combineReducers({
     tasks: tasksReducer,
-    todolists: todolistsReducer,
+    todolists: todolistsSlice,
     app: appReducer,
     auth: authReducer,
 })

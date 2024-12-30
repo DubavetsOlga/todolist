@@ -1,6 +1,6 @@
 import { v1 } from "uuid"
 import { addTaskAC, removeTaskAC, tasksReducer, TasksType, updateTaskAC } from "../tasks-reducer"
-import { addTodolistAC, removeTodolistAC } from "../todolists-reducer"
+import { addTodolistAC, removeTodolistAC } from "../todolistsSlice"
 import { TaskPriority, TaskStatus } from "common/enums/enums"
 
 let startState: TasksType
