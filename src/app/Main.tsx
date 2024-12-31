@@ -7,8 +7,8 @@ import { useAppDispatch } from "common/hooks/useAppDispatch"
 import { useNavigate } from "react-router"
 import { useAppSelector } from "common/hooks/useAppSelector"
 import { useEffect } from "react"
-import { selectIsLoggedIn } from "app/appSelectors"
 import { Path } from "common/routing/Routing"
+import { selectIsLoggedIn } from "../features/auth/model/authSlice"
 
 export const Main = () => {
     const dispatch = useAppDispatch()

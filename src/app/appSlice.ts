@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
+import { authSlice } from "../features/auth/model/authSlice"
 
 export type ThemeMode = "dark" | "light"
 export type RequestStatus = "idle" | "loading" | "succeeded" | "failed"
@@ -6,7 +7,7 @@ export type RequestStatus = "idle" | "loading" | "succeeded" | "failed"
 export const appSlice = createSlice({
     name: "app",
     initialState: {
-        themeMode: localStorage.getItem("theme") ?? ("light" as ThemeMode),
+        themeMode: (localStorage.getItem("theme") ?? "light") as ThemeMode,
         status: "idle" as RequestStatus,
         error: null as string | null,
     },
@@ -21,7 +22,11 @@ export const appSlice = createSlice({
             state.error = action.payload.error
         }),
     }),
+    selectors: {
+        selectThemeMode: state => state.themeMode,
+    },
 })
 
 export const { changeTheme, setAppError, setAppStatus } = appSlice.actions
 export const appReducer = appSlice.reducer
+export const { selectThemeMode } = appSlice.selectors

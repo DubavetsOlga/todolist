@@ -1,10 +1,15 @@
-import { addTodolistAC, changeTodolistTitleAC, removeTodolistAC, todolistsSlice } from "../todolistsSlice"
+import {
+    addTodolist,
+    changeTodolistTitle,
+    DomainTodolist,
+    removeTodolist,
+    todolistsReducer,
+} from "../todolistsSlice"
 import { v1 } from "uuid"
-import { TodolistType } from "../../api/todolistsApi.types"
 
 let todolistId1: string
 let todolistId2: string
-let startState: TodolistType[] = []
+let startState: DomainTodolist[] = []
 
 beforeEach(() => {
     todolistId1 = v1()
@@ -16,18 +21,20 @@ beforeEach(() => {
             title: "What to learn",
             addedDate: "",
             order: 0,
+            entityStatus: "idle"
         },
         {
             id: todolistId2,
             title: "What to buy",
             addedDate: "",
             order: 1,
+            entityStatus: "idle"
         },
     ]
 })
 
 test("correct todolist should be removed", () => {
-    const endState = todolistsSlice(startState, removeTodolistAC({ id: todolistId1 }))
+    const endState = todolistsReducer(startState, removeTodolist({ id: todolistId1 }))
 
     expect(endState.length).toBe(1)
     expect(endState[0].id).toBe(todolistId2)
@@ -36,9 +43,9 @@ test("correct todolist should be removed", () => {
 test("correct todolist should be added", () => {
     const newTitle = "New Todolist"
 
-    const endState = todolistsSlice(
+    const endState = todolistsReducer(
         startState,
-        addTodolistAC({
+        addTodolist({
             todolist: {
                 id: v1(),
                 title: newTitle,
@@ -55,7 +62,7 @@ test("correct todolist should be added", () => {
 test("correct todolist should change its title", () => {
     const newTitle = "New Todolist"
 
-    const endState = todolistsSlice(startState, changeTodolistTitleAC({ id: todolistId1, title: newTitle }))
+    const endState = todolistsReducer(startState, changeTodolistTitle({ id: todolistId1, title: newTitle }))
 
     expect(endState[0].title).toBe(newTitle)
     expect(endState[1].title).toBe("What to buy")

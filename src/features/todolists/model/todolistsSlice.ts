@@ -61,6 +61,8 @@ export const {
     setTodolists,
 } = todolistsSlice.actions
 
+export const todolistsReducer = todolistsSlice.reducer
+
 //Thunks
 export const fetchTodolistsTC = (): AppThunk => async (dispatch) => {
     dispatch(setAppStatus({ status: "loading" }))

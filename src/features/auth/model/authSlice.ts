@@ -24,12 +24,17 @@ export const authSlice = createSlice({
             state.isInitialized = action.payload.isInitialized
         }),
     }),
+    selectors: {
+        selectIsLoggedIn: state => state.isLoggedIn,
+        selectIsInitialized: state => state.isInitialized,
+    },
 })
 
 // Action creator также достаем с помощью slice
 export const { setIsLoggedIn, setIsInitialized } = authSlice.actions
 // Создаем reducer при помощи slice
 export const authReducer = authSlice.reducer
+export const { selectIsLoggedIn, selectIsInitialized } = authSlice.selectors
 
 // thunks
 export const loginTC = (data: LoginArgs) => (dispatch: Dispatch) => {

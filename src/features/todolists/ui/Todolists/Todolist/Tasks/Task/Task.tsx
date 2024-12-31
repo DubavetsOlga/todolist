@@ -1,4 +1,4 @@
-import { removeTaskTC, updateTaskTC } from "../../../../../model/tasks-reducer"
+import { removeTaskTC, updateTaskTC } from "../../../../../model/tasksSlice"
 import { ChangeEvent } from "react"
 import { Checkbox, ListItem } from "@mui/material"
 import { EditableSpan } from "common/components"

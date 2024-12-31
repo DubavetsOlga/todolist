@@ -7,7 +7,7 @@ import { selectTasks } from "app/appSelectors"
 import { TaskStatus } from "common/enums/enums"
 import { useAppDispatch } from "common/hooks/useAppDispatch"
 import { useEffect } from "react"
-import { fetchTasksTC } from "../../../../model/tasks-reducer"
+import { fetchTasksTC } from "../../../../model/tasksSlice"
 import { DomainTodolist } from "../../../../model/todolistsSlice"
 
 type Props = {
