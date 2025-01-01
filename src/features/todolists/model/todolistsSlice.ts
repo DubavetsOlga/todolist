@@ -39,17 +39,20 @@ export const todolistsSlice = createSlice({
         }),
         setTodolists: create.reducer<{ todolists: TodolistType[] }>((state, action) => {
             // 1 variant
-            //return action.payload.todolists.map(tl => ({ ...tl, filter: 'all', entityStatus: 'idle' }))
+            return action.payload.todolists.map(tl => ({ ...tl, entityStatus: 'idle' }))
 
             // 2 variant
-            action.payload.todolists.forEach((tl) => {
-                state.push({ ...tl, entityStatus: "idle" })
-            })
+            //action.payload.todolists.forEach((tl) => {
+            //    state.push({ ...tl, entityStatus: "idle" })
+            //})
         }),
         clearTodolists: create.reducer(() => {
             return []
         }),
     }),
+    selectors: {
+        selectTodolists: (state) => state,
+    },
 })
 
 export const {
@@ -62,6 +65,7 @@ export const {
 } = todolistsSlice.actions
 
 export const todolistsReducer = todolistsSlice.reducer
+export const { selectTodolists } = todolistsSlice.selectors
 
 //Thunks
 export const fetchTodolistsTC = (): AppThunk => async (dispatch) => {

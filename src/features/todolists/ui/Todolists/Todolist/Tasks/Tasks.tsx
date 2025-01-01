@@ -3,11 +3,10 @@ import { useAutoAnimate } from "@formkit/auto-animate/react"
 import { FilterValuesType } from "../Todolist"
 import { Task } from "./Task/Task"
 import { useAppSelector } from "common/hooks/useAppSelector"
-import { selectTasks } from "app/appSelectors"
 import { TaskStatus } from "common/enums/enums"
 import { useAppDispatch } from "common/hooks/useAppDispatch"
 import { useEffect } from "react"
-import { fetchTasksTC } from "../../../../model/tasksSlice"
+import { fetchTasksTC, selectTasks } from "../../../../model/tasksSlice"
 import { DomainTodolist } from "../../../../model/todolistsSlice"
 
 type Props = {
@@ -31,9 +30,9 @@ export const Tasks = ({ todolist, filter }: Props) => {
     const taskFilter = () => {
         switch (filter) {
             case "active":
-                return allTodolistTasks.filter(task => task.status === TaskStatus.New)
+                return allTodolistTasks.filter((task) => task.status === TaskStatus.New)
             case "completed":
-                return allTodolistTasks.filter(task => task.status === TaskStatus.Completed)
+                return allTodolistTasks.filter((task) => task.status === TaskStatus.Completed)
             default:
                 return allTodolistTasks
         }
@@ -48,7 +47,7 @@ export const Tasks = ({ todolist, filter }: Props) => {
             ) : (
                 <List ref={listRef}>
                     {filteredTasks.map((task) => {
-                        return <Task task={task} todolist={todolist} key={task.id}/>
+                        return <Task task={task} todolist={todolist} key={task.id} />
                     })}
                 </List>
             )}
