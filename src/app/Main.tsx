@@ -1,17 +1,16 @@
 import Container from "@mui/material/Container"
 import Grid from "@mui/material/Grid2"
 import { AddItemForm } from "common/components"
-import { addTodolistTC } from "../features/todolists/model/todolistsSlice"
 import { Todolists } from "../features/todolists/ui/Todolists/Todolists"
-import { useAppDispatch } from "common/hooks/useAppDispatch"
 import { useNavigate } from "react-router"
 import { useAppSelector } from "common/hooks/useAppSelector"
 import { useEffect } from "react"
 import { Path } from "common/routing/Routing"
-import { selectIsLoggedIn } from "../features/auth/model/authSlice"
+import { useAddTodolistMutation } from "../features/todolists/api/todolistsApi"
+import { selectIsLoggedIn } from "app/appSlice"
 
 export const Main = () => {
-    const dispatch = useAppDispatch()
+    const [addTodolist] = useAddTodolistMutation()
 
     const navigate = useNavigate()
 
@@ -23,14 +22,14 @@ export const Main = () => {
         }
     }, [isLoggedIn])
 
-    const addTodolist = (title: string) => {
-        dispatch(addTodolistTC(title))
+    const addTodolistCallback = (title: string) => {
+        addTodolist(title)
     }
 
     return (
         <Container fixed>
             <Grid container sx={{ mb: "30px" }}>
-                <AddItemForm addItem={addTodolist} />
+                <AddItemForm addItem={addTodolistCallback} />
             </Grid>
             <Grid container spacing={4}>
                 <Todolists />

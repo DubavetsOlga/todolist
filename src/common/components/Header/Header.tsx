@@ -4,12 +4,15 @@ import IconButton from "@mui/material/IconButton"
 import MenuIcon from "@mui/icons-material/Menu"
 import { MenuButton } from "common/components"
 import Switch from "@mui/material/Switch"
-import { changeTheme } from "app/appSlice"
+import { changeTheme, selectIsLoggedIn, setIsLoggedIn } from "app/appSlice"
 import { useAppSelector } from "common/hooks/useAppSelector"
 import { useAppDispatch } from "common/hooks/useAppDispatch"
 import { getTheme } from "common/theme/theme"
-import { logoutTC, selectIsLoggedIn } from "../../../features/auth/model/authSlice"
 import { LinearProgress } from "@mui/material"
+import { ResultCode } from "common/enums/enums"
+import { clearTasks } from "../../../features/todolists/model/tasksSlice"
+import { clearTodolists } from "../../../features/todolists/model/todolistsSlice"
+import { useLogoutMutation } from "../../../features/auth/api/authApi"
 
 export const Header = () => {
     const themeMode = useAppSelector((state) => state.app.themeMode)
@@ -18,12 +21,21 @@ export const Header = () => {
     const theme = getTheme(themeMode)
     const isLoggedIn = useAppSelector(selectIsLoggedIn)
 
-    const changeModeHandler = () => {
-        dispatch(changeTheme({ themeMode: themeMode === "light" ? "dark" : "light" }))
+    const [logout] = useLogoutMutation()
+
+    const logoutHandler = () => {
+        logout().then((res) => {
+            if (res.data?.resultCode === ResultCode.Success) {
+                dispatch(setIsLoggedIn({ isLoggedIn: false }))
+                localStorage.removeItem("sn-token")
+                dispatch(clearTasks())
+                dispatch(clearTodolists())
+            }
+        })
     }
 
-    const onLogout = () => {
-        dispatch(logoutTC())
+    const changeModeHandler = () => {
+        dispatch(changeTheme({ themeMode: themeMode === "light" ? "dark" : "light" }))
     }
 
     return (
@@ -33,7 +45,7 @@ export const Header = () => {
                     <MenuIcon />
                 </IconButton>
                 <div>
-                    {isLoggedIn && <MenuButton onClick={onLogout}>Logout</MenuButton>}
+                    {isLoggedIn && <MenuButton onClick={logoutHandler}>Logout</MenuButton>}
                     <MenuButton background={theme.palette.primary.dark}>Faq</MenuButton>
                     <Switch color={"default"} onChange={changeModeHandler} checked={themeMode === "dark"} />
                 </div>

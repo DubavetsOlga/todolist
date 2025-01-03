@@ -9,17 +9,14 @@ import { useAppSelector } from "common/hooks/useAppSelector"
 import Grid from "@mui/material/Grid2"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import s from "./Login.module.css"
-import { loginTC, selectIsLoggedIn } from "../../model/authSlice"
 import { useNavigate } from "react-router"
 import { useEffect } from "react"
 import { Path } from "common/routing/Routing"
 import { useAppDispatch } from "common/hooks/useAppDispatch"
-
-type Inputs = {
-    email: string
-    password: string
-    rememberMe: boolean
-}
+import { selectIsLoggedIn, setIsLoggedIn } from "app/appSlice"
+import { ResultCode } from "common/enums/enums"
+import { LoginArgs } from "../../api/authApi.types"
+import { useLoginMutation } from "../../api/authApi"
 
 export const Login = () => {
     const isLoggedIn = useAppSelector(selectIsLoggedIn)
@@ -38,13 +35,23 @@ export const Login = () => {
         reset,
         control,
         formState: { errors },
-    } = useForm<Inputs>({ defaultValues: { email: "", password: "", rememberMe: false } })
+    } = useForm<LoginArgs>({ defaultValues: { email: "", password: "", rememberMe: false } })
 
     const dispatch = useAppDispatch()
 
-    const onSubmit: SubmitHandler<Inputs> = (data) => {
-        dispatch(loginTC(data))
-        //reset()
+    const [login] = useLoginMutation()
+
+    const onSubmit: SubmitHandler<LoginArgs> = (data) => {
+        login(data)
+            .then((res) => {
+                if (res.data?.resultCode === ResultCode.Success) {
+                    dispatch(setIsLoggedIn({ isLoggedIn: true }))
+                    localStorage.setItem("sn-token", res.data.data.token)
+                }
+            })
+            .finally(() => {
+                reset()
+            })
     }
 
     return (
