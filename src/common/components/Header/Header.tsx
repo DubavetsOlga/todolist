@@ -10,9 +10,8 @@ import { useAppDispatch } from "common/hooks/useAppDispatch"
 import { getTheme } from "common/theme/theme"
 import { LinearProgress } from "@mui/material"
 import { ResultCode } from "common/enums/enums"
-import { clearTasks } from "../../../features/todolists/model/tasksSlice"
-import { clearTodolists } from "../../../features/todolists/model/todolistsSlice"
 import { useLogoutMutation } from "../../../features/auth/api/authApi"
+import { baseApi } from "app/baseApi"
 
 export const Header = () => {
     const themeMode = useAppSelector((state) => state.app.themeMode)
@@ -24,14 +23,17 @@ export const Header = () => {
     const [logout] = useLogoutMutation()
 
     const logoutHandler = () => {
-        logout().then((res) => {
-            if (res.data?.resultCode === ResultCode.Success) {
-                dispatch(setIsLoggedIn({ isLoggedIn: false }))
-                localStorage.removeItem("sn-token")
-                dispatch(clearTasks())
-                dispatch(clearTodolists())
-            }
-        })
+        logout()
+            .then((res) => {
+                if (res.data?.resultCode === ResultCode.Success) {
+                    dispatch(setIsLoggedIn({ isLoggedIn: false }))
+                    localStorage.removeItem("sn-token")
+                    dispatch(baseApi.util.resetApiState())
+                }
+            })
+            .then(() => {
+                dispatch(baseApi.util.invalidateTags(['Task', 'Todolist']))
+            })
     }
 
     const changeModeHandler = () => {

@@ -1,14 +1,13 @@
-import { removeTaskTC, updateTaskTC } from "../../../../../model/tasksSlice"
 import { ChangeEvent } from "react"
 import { Checkbox, ListItem } from "@mui/material"
 import { EditableSpan } from "common/components"
 import IconButton from "@mui/material/IconButton"
 import DeleteIcon from "@mui/icons-material/Delete"
 import { getListItemSx } from "./Task.styles"
-import { useAppDispatch } from "common/hooks/useAppDispatch"
 import { DomainTask } from "../../../../../api/tasksApi.types"
 import { TaskStatus } from "common/enums/enums"
-import { DomainTodolist } from "../../../../../model/todolistsSlice"
+import { useRemoveTaskMutation, useUpdateTaskMutation } from "../../../../../api/tasksApi"
+import { DomainTodolist } from "../../../../../api/todolistsApi.types"
 
 type Props = {
     task: DomainTask
@@ -16,21 +15,23 @@ type Props = {
 }
 
 export const Task = ({ task, todolist }: Props) => {
-    const dispatch = useAppDispatch()
+    const [removeTask] = useRemoveTaskMutation()
 
     const removeTaskHandler = () => {
-        dispatch(removeTaskTC({ taskId: task.id, todolistId: todolist.id }))
+        removeTask({ taskId: task.id, todolistId: todolist.id })
     }
+
+    const [updateTask] = useUpdateTaskMutation()
 
     const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const status = e.currentTarget.checked ? TaskStatus.Completed : TaskStatus.New
         const newTask: DomainTask = { ...task, status }
-        dispatch(updateTaskTC({ task: newTask }))
+        updateTask({ task: newTask })
     }
 
     const changeTaskTitleHandler = (title: string) => {
         const newTask: DomainTask = { ...task, title }
-        dispatch(updateTaskTC({ task: newTask }))
+        updateTask({ task: newTask })
     }
 
     return (

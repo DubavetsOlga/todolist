@@ -2,12 +2,9 @@ import List from "@mui/material/List"
 import { useAutoAnimate } from "@formkit/auto-animate/react"
 import { FilterValuesType } from "../Todolist"
 import { Task } from "./Task/Task"
-import { useAppSelector } from "common/hooks/useAppSelector"
 import { TaskStatus } from "common/enums/enums"
-import { useAppDispatch } from "common/hooks/useAppDispatch"
-import { useEffect } from "react"
-import { fetchTasksTC, selectTasks } from "../../../../model/tasksSlice"
-import { DomainTodolist } from "../../../../model/todolistsSlice"
+import { useGetTasksQuery } from "../../../../api/tasksApi"
+import { DomainTodolist } from "../../../../api/todolistsApi.types"
 
 type Props = {
     todolist: DomainTodolist
@@ -17,15 +14,9 @@ type Props = {
 export const Tasks = ({ todolist, filter }: Props) => {
     const [listRef] = useAutoAnimate<HTMLUListElement>()
 
-    const tasks = useAppSelector(selectTasks)
+    const { data } = useGetTasksQuery({ todolistId: todolist.id })
 
-    const dispatch = useAppDispatch()
-
-    useEffect(() => {
-        dispatch(fetchTasksTC(todolist.id))
-    }, [])
-
-    const allTodolistTasks = tasks[todolist.id] ?? []
+    const allTodolistTasks = data ? data.items : []
 
     const taskFilter = () => {
         switch (filter) {
