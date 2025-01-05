@@ -5,6 +5,7 @@ import { Task } from "./Task/Task"
 import { TaskStatus } from "common/enums/enums"
 import { useGetTasksQuery } from "../../../../api/tasksApi"
 import { DomainTodolist } from "../../../../api/todolistsApi.types"
+import { TasksSkeleton } from "features/todolists/ui/skeletons/TasksSkeleton/TasksSkeleton"
 
 type Props = {
     todolist: DomainTodolist
@@ -14,7 +15,11 @@ type Props = {
 export const Tasks = ({ todolist, filter }: Props) => {
     const [listRef] = useAutoAnimate<HTMLUListElement>()
 
-    const { data } = useGetTasksQuery({ todolistId: todolist.id })
+    const { data, isLoading } = useGetTasksQuery({ todolistId: todolist.id })
+
+    if (isLoading) {
+        return <TasksSkeleton />
+    }
 
     const allTodolistTasks = data ? data.items : []
 
