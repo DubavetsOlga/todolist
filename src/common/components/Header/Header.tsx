@@ -28,7 +28,7 @@ export const Header = () => {
                 if (res.data?.resultCode === ResultCode.Success) {
                     dispatch(setIsLoggedIn({ isLoggedIn: false }))
                     localStorage.removeItem("sn-token")
-                    dispatch(baseApi.util.resetApiState())
+                    //dispatch(baseApi.util.resetApiState())
                 }
             })
             .then(() => {

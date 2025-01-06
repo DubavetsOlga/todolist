@@ -6,6 +6,9 @@ import { TaskStatus } from "common/enums/enums"
 import { useGetTasksQuery } from "../../../../api/tasksApi"
 import { DomainTodolist } from "../../../../api/todolistsApi.types"
 import { TasksSkeleton } from "features/todolists/ui/skeletons/TasksSkeleton/TasksSkeleton"
+import { setAppError } from "app/appSlice"
+import { useAppDispatch } from "common/hooks/useAppDispatch"
+import { useEffect } from "react"
 
 type Props = {
     todolist: DomainTodolist
@@ -15,7 +18,22 @@ type Props = {
 export const Tasks = ({ todolist, filter }: Props) => {
     const [listRef] = useAutoAnimate<HTMLUListElement>()
 
-    const { data, isLoading } = useGetTasksQuery({ todolistId: todolist.id })
+    const { data, isLoading, error } = useGetTasksQuery({ todolistId: todolist.id })
+
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        if (error) {
+            let errMsg = "Some error occurred"
+            if ("data" in error) {
+                const errData = error.data as Error
+                if ("message" in errData) {
+                    errMsg = errData.message as string
+                }
+            }
+            dispatch(setAppError({ error: errMsg }))
+        }
+    }, [error])
 
     if (isLoading) {
         return <TasksSkeleton />
