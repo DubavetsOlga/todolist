@@ -8,7 +8,8 @@ import { DomainTodolist } from "../../../../api/todolistsApi.types"
 import { TasksSkeleton } from "features/todolists/ui/skeletons/TasksSkeleton/TasksSkeleton"
 import { setAppError } from "app/appSlice"
 import { useAppDispatch } from "common/hooks/useAppDispatch"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+import { TasksPagination } from "../TasksPagination/TasksPagination"
 
 type Props = {
     todolist: DomainTodolist
@@ -17,8 +18,9 @@ type Props = {
 
 export const Tasks = ({ todolist, filter }: Props) => {
     const [listRef] = useAutoAnimate<HTMLUListElement>()
+    const [page, setPage] = useState(1)
 
-    const { data, isLoading, error } = useGetTasksQuery({ todolistId: todolist.id })
+    const { data, isLoading, error } = useGetTasksQuery({ todolistId: todolist.id, args: { page } })
 
     const dispatch = useAppDispatch()
 
@@ -59,11 +61,14 @@ export const Tasks = ({ todolist, filter }: Props) => {
             {filteredTasks.length === 0 ? (
                 <p>Тасок нет</p>
             ) : (
-                <List ref={listRef}>
-                    {filteredTasks.map((task) => {
-                        return <Task task={task} todolist={todolist} key={task.id} />
-                    })}
-                </List>
+                <>
+                    <List ref={listRef}>
+                        {filteredTasks.map((task) => {
+                            return <Task task={task} todolist={todolist} key={task.id} />
+                        })}
+                    </List>
+                    <TasksPagination totalCount={data?.totalCount || 0} page={page} setPage={setPage} />
+                </>
             )}
         </>
     )
