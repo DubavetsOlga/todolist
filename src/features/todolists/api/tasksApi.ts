@@ -27,7 +27,7 @@ export const tasksApi = baseApi.injectEndpoints({
                     body: { title },
                 }
             },
-            invalidatesTags: (res, err, { todolistId }) => [{ type: "Task", id: todolistId }],
+            invalidatesTags: (res, err, { todolistId }) => [{ type: "Task", todolistId: todolistId }],
         }),
         removeTask: build.mutation<BaseResponse, { todolistId: string; taskId: string }>({
             query: ({ todolistId, taskId }) => {
@@ -36,7 +36,7 @@ export const tasksApi = baseApi.injectEndpoints({
                     url: `todo-lists/${todolistId}/tasks/${taskId}`,
                 }
             },
-            invalidatesTags: (res, err, { todolistId }) => [{ type: "Task", id: todolistId }],
+            invalidatesTags: (res, err, { todolistId }) => [{ type: "Task", todolistId: todolistId }],
         }),
         updateTask: build.mutation<BaseResponse<{ item: DomainTask }>, { task: DomainTask }>({
             query: ({ task }) => {
@@ -54,7 +54,7 @@ export const tasksApi = baseApi.injectEndpoints({
                     body: model,
                 }
             },
-            invalidatesTags: (res, err, { task }) => [{ type: "Task", id: task.todoListId }],
+            invalidatesTags: (res, err, { task }) => [{ type: "Task", todolistId: task.todoListId }],
         }),
     }),
 })
