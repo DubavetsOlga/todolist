@@ -5,53 +5,17 @@ import FormControlLabel from "@mui/material/FormControlLabel"
 import FormGroup from "@mui/material/FormGroup"
 import FormLabel from "@mui/material/FormLabel"
 import TextField from "@mui/material/TextField"
-import { useAppSelector } from "common/hooks/useAppSelector"
 import Grid from "@mui/material/Grid2"
-import { Controller, SubmitHandler, useForm } from "react-hook-form"
+import { Controller } from "react-hook-form"
 import s from "./Login.module.css"
-import { useNavigate } from "react-router"
-import { useEffect } from "react"
-import { Path } from "common/routing/Routing"
-import { useAppDispatch } from "common/hooks/useAppDispatch"
-import { selectIsLoggedIn, setIsLoggedIn } from "app/appSlice"
-import { ResultCode } from "common/enums/enums"
-import { LoginArgs } from "../../api/authApi.types"
-import { useLoginMutation } from "../../api/authApi"
+import { Navigate } from "react-router"
+import { useLogin } from "common/hooks/useLogin"
 
 export const Login = () => {
-    const isLoggedIn = useAppSelector(selectIsLoggedIn)
+    const { isLoggedIn, control, onSubmit, handleSubmit, errors, register } = useLogin()
 
-    const navigate = useNavigate()
-
-    useEffect(() => {
-        if (isLoggedIn) {
-            navigate(Path.Main)
-        }
-    }, [isLoggedIn])
-
-    const {
-        register,
-        handleSubmit,
-        reset,
-        control,
-        formState: { errors },
-    } = useForm<LoginArgs>({ defaultValues: { email: "", password: "", rememberMe: false } })
-
-    const dispatch = useAppDispatch()
-
-    const [login] = useLoginMutation()
-
-    const onSubmit: SubmitHandler<LoginArgs> = (data) => {
-        login(data)
-            .then((res) => {
-                if (res.data?.resultCode === ResultCode.Success) {
-                    dispatch(setIsLoggedIn({ isLoggedIn: true }))
-                    localStorage.setItem("sn-token", res.data.data.token)
-                }
-            })
-            .finally(() => {
-                reset()
-            })
+    if (isLoggedIn) {
+        return <Navigate to={'/'} />
     }
 
     return (
